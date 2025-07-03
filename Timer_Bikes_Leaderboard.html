@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Full Window Bike Race Game</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    html, body {
+      margin: 0; padding: 0; box-sizing: border-box;
+      width: 100vw; height: 100vh;
+      min-height: 100vh;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: #f7fafd;
+      overflow: hidden;
+    }
+    body {
+      width: 100vw; height: 100vh;
+      display: flex; flex-direction: column; align-items: stretch; justify-content: stretch;
+    }
+    #main-wrap {
+      display: flex; flex-direction: column; height: 100vh; width: 100vw;
+    }
+    .top-panel {
+      width: 100vw; background: #f7fafd; padding: 0.6em 0 0.4em 0; box-sizing: border-box; flex-shrink: 0;
+      display: flex; align-items: center; gap: 1.2em; justify-content: center; min-height: 52px; flex-wrap: wrap;
+      border-bottom: 2.5px solid #e4eafd;
+      z-index: 10;
+    }
+    .top-panel label, .top-panel input, .top-panel button {
+      font-size: 1.13em;
+    }
+    .timer {
+      font-size: 1.6em; font-weight: bold; color: #263048; background: #e3ecf6; padding: 0.13em 0.85em; border-radius: 9px;
+      margin-right: 0.8em; border: 2px solid #e1ebfc;
+      min-width: 94px; text-align: center;
+      letter-spacing: 2px;
+    }
+    .race-track-outer {
+      flex: 1; width: 100vw; display: flex; align-items: stretch; justify-content: center; position: relative; background: #f2faff;
+      overflow: hidden;
+    }
+    .race-track {
+      width: 97vw; height: 100%; margin: 0 auto; display: flex; flex-direction: column; justify-content: flex-start; align-items: stretch;
+      border-radius: 24px;
+      box-shadow: 0 4px 18px #daeaff60;
+      padding: 1vw 0.5vw 1vw 0.5vw;
+      background: #f9fbfe;
+      position: relative;
+      overflow-y: auto;
+      min-height: 120px;
+      max-height: 100%;
+    }
+    .bike-row {
+      display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
+      width: 100%;
+      margin: 0.3em 0 0.7em 0;
+      position: relative;
+      transition: height 0.2s, font-size 0.2s;
+    }
+    .bike-label {
+      font-size: 1.12em; font-weight: 500; color: #18314a; letter-spacing: 0.5px; user-select: none; white-space: nowrap;
+      display: flex; align-items: center; gap: 9px; margin-bottom: 2px;
+    }
+    .bike-color {
+      font-weight: bold;
+      margin-right: 2px;
+    }
+    .progress-bar-bg {
+      position: relative; width: 100%; height: 28px;
+      background: #e3ecf6; border-radius: 13px; margin: 0 0 0.1em 0; box-shadow: 1px 1px 3px #e2e5eb90;
+      border: 1.2px solid #bed7ed; overflow: visible;
+      display: flex; align-items: center;
+    }
+    .progress-bar-fg {
+      position: absolute; left: 0; top: 0; bottom: 0; height: 100%; border-radius: 13px;
+      transition: width 0.15s linear; z-index: 2; opacity: 0.92;
+    }
+    .bike-emoji-ontrack {
+      position: absolute; top: 50%; transform: translateY(-50%) scaleX(-1); /* Flip horizontally */
+      font-size: 2.3em; z-index: 10;
+      transition: left 0.15s linear;
+      user-select: none;
+      pointer-events: none;
+    }
+    .finish-flag { position: absolute; right: 2px; top: 49%; transform: translateY(-50%); font-size: 1.4em; color: #1961c9; z-index: 20;}
+    .winner { animation: winner-flash 0.5s alternate infinite;}
+    @keyframes winner-flash { 0% { filter: brightness(1) drop-shadow(0 0 9px #b8ffc7);} 100% { filter: brightness(2) drop-shadow(0 0 18px #6af690);} }
+    .leaderboard-toggle-wrap {
+      width: 100vw;
+      text-align: center;
+      background: #fff;
+      border-top: 2.5px solid #e4eafd;
+      padding: 0.6em 0 0.5em 0;
+    }
+    #toggle-leaderboard-btn {
+      font-size: 1.1em;
+      background: #1877ff;
+      color: #fff;
+      border: none;
+      border-radius: 12px;
+      padding: 0.38em 1.3em;
+      box-shadow: 0 2px 8px #1877ff22;
+      cursor: pointer;
+      margin: 0.25em auto 0.1em auto;
+      transition: background 0.2s;
+    }
+    #toggle-leaderboard-btn:hover {
+      background: #1957ad;
+    }
+    .leaderboard-panel {
+      width: 100vw; min-height: 54px; background: #fff; border-top: none;
+      display: flex; flex-direction: column; align-items: center; justify-content: flex-start; padding: 0.5em 0 0.3em 0;
+      position: relative; z-index: 30;
+    }
+    .leaderboard-title { font-size: 1.13em; font-weight: bold; margin-bottom: 3px; color: #1877ff;}
+    .leaderboard-table { width: 99vw; max-width: 1000px; border-collapse: collapse; font-size: 1.05em;}
+    .leaderboard-table th, .leaderboard-table td { padding: 5px 7px; text-align: left;}
+    .leaderboard-table th { border-bottom: 2px solid #e1eaff;}
+    .leaderboard-table td { border-bottom: 1px solid #e1eaff;}
+    .first-place { color: #fa9e26; font-weight: bold;}
+    .leaderboard-table tr:last-child td { border-bottom: none;}
+    .winner-banner {
+      position: absolute; top: 1.5em; left: 50%; transform: translateX(-50%);
+      min-width: 220px; background: #e9f6e0; color: #226e19;
+      font-size: 1.25em; font-weight: bold; padding: 0.33em 1.2em; border-radius: 16px; border: 2px solid #90e59e;
+      box-shadow: 0 4px 12px #b8ffc785;
+      z-index: 50; text-align: center; animation: winnerPop 0.5s;
+      display: none;
+    }
+    @keyframes winnerPop { 0% { transform: translateX(-50%) scale(0.5);} 70% { transform: translateX(-50%) scale(1.08);} 100% { transform: translateX(-50%) scale(1);} }
+    @media (max-width: 900px) {
+      .bike-label {font-size: 1em;}
+      .leaderboard-table {font-size: 0.95em;}
+    }
+    @media (max-width: 600px) {
+      .bike-label {font-size: 0.93em;}
+      .progress-bar-bg {height: 18px;}
+      .bike-emoji-ontrack {font-size: 1.18em;}
+      .leaderboard-table {font-size: 0.83em;}
+    }
+  </style>
+</head>
+<body>
+<div id="main-wrap">
+  <div class="top-panel">
+    <span class="timer" id="timer">00:00</span>
+    <form id="nameForm" style="display:inline-block;" onsubmit="event.preventDefault(); addName();">
+      <input id="nameInput" type="text" placeholder="Add name" autocomplete="off" required style="font-size:1.05em;"/>
+      <button type="submit">Add</button>
+    </form>
+    <span id="namesList"></span>
+    <label for="race-time">Time (min):</label>
+    <input id="race-time" type="number" min="1" max="60" value="1" />
+    <button onclick="startRace()">Start Race</button>
+    <button onclick="resetRace()" style="background:#e24646;">Reset All</button>
+  </div>
+  <div class="race-track-outer">
+    <div class="race-track" id="race-track"></div>
+    <div id="winner-banner" class="winner-banner"></div>
+  </div>
+  <div class="leaderboard-toggle-wrap">
+    <button id="toggle-leaderboard-btn" onclick="toggleLeaderboard()">Show Leaderboard</button>
+  </div>
+  <div class="leaderboard-panel" id="leaderboard-panel" style="display: none;">
+    <div class="leaderboard-title">🏆 Leaderboard</div>
+    <table class="leaderboard-table" id="leaderboard">
+      <thead><tr><th>Bike</th><th>Name</th><th>Wins</th></tr></thead>
+      <tbody></tbody>
+    </table>
+  </div>
+</div>
+<script>
+  const bikeEmojis = ["🚴‍♂️", "🚴‍♀️"];
+  const colorInfo = [
+    {color:'hsl(0,75%,52%)', name:'Red'},
+    {color:'hsl(30,75%,52%)', name:'Orange'},
+    {color:'hsl(50,75%,52%)', name:'Yellow'},
+    {color:'hsl(90,75%,52%)', name:'Lime'},
+    {color:'hsl(120,75%,52%)', name:'Green'},
+    {color:'hsl(160,75%,52%)', name:'Teal'},
+    {color:'hsl(180,75%,52%)', name:'Cyan'},
+    {color:'hsl(210,75%,52%)', name:'Sky'},
+    {color:'hsl(240,75%,52%)', name:'Blue'},
+    {color:'hsl(270,75%,52%)', name:'Purple'},
+    {color:'hsl(300,75%,52%)', name:'Magenta'},
+    {color:'hsl(330,75%,52%)', name:'Pink'},
+    {color:'hsl(15,75%,52%)', name:'Coral'},
+    {color:'hsl(100,75%,52%)', name:'Spring'},
+    {color:'hsl(200,75%,52%)', name:'Aqua'},
+    {color:'hsl(320,75%,52%)', name:'Fuchsia'},
+    {color:'hsl(220,75%,52%)', name:'Azure'},
+    {color:'hsl(190,75%,52%)', name:'Turquoise'},
+    {color:'hsl(80,75%,52%)', name:'Chartreuse'},
+    {color:'hsl(110,75%,52%)', name:'Emerald'},
+    {color:'hsl(340,75%,52%)', name:'Rose'},
+    {color:'hsl(175,75%,52%)', name:'Mint'},
+    {color:'hsl(285,75%,52%)', name:'Violet'},
+    {color:'hsl(60,75%,52%)', name:'Gold'}
+  ];
+  let names = [], teams = [], scores = [];
+  let leaderboardShown = false;
+
+  function addName() {
+    const input = document.getElementById('nameInput');
+    const name = input.value.trim();
+    if (name && !names.includes(name)) {
+      names.push(name);
+      input.value = '';
+      renderNamesList();
+      renderRace();
+      renderLeaderboard();
+    }
+  }
+  function renderNamesList() {
+    const list = document.getElementById('namesList');
+    list.innerHTML = names.map((n,i)=>`<span style="display:inline-block;margin:0 6px 0 2px;">${n} <button onclick="removeName(${i})" style="font-size:0.85em; background:#eee; color:#444; border:none; border-radius:4px; margin-left:2px; cursor:pointer;">×</button></span>`).join('');
+  }
+  function removeName(idx) {
+    names.splice(idx,1);
+    renderNamesList();
+    renderRace();
+    renderLeaderboard();
+  }
+  function resetRace() {
+    names = [];
+    teams = [];
+    scores = [];
+    renderNamesList();
+    renderRace();
+    renderLeaderboard();
+    document.getElementById('winner-banner').style.display = "none";
+    updateTimer(0);
+    toggleLeaderboard(false);
+  }
+  function toggleLeaderboard(forceState) {
+    // Optionally pass true/false to force shown/hidden state
+    if (typeof forceState === "boolean") leaderboardShown = forceState;
+    else leaderboardShown = !leaderboardShown;
+
+    document.getElementById('leaderboard-panel').style.display = leaderboardShown ? "block" : "none";
+    document.getElementById('toggle-leaderboard-btn').textContent = leaderboardShown ? "Hide Leaderboard" : "Show Leaderboard";
+  }
+  function startRace() {
+    if (names.length < 2) { alert('Add at least 2 names!'); return; }
+    teams = names.map((name,i) => {
+      let col = colorInfo[i%colorInfo.length];
+      return {
+        name,
+        bike: bikeEmojis[i%2],
+        color: col.color,
+        colorName: col.name
+      }
+    });
+    if (scores.length !== names.length) scores = Array(names.length).fill(0);
+    renderRace();
+    renderLeaderboard();
+    duration = Math.max(1, Math.min(60, +document.getElementById('race-time').value)) * 60;
+    winnerIndex = -1;
+    finished = false;
+    carSpeeds = teams.map(() => 0.97 + Math.random() * 0.1);
+    updateTimer(duration);
+    startTimestamp = null;
+    if (timerId) clearInterval(timerId);
+    requestAnimationFrame(animateBikes);
+    timerId = setInterval(() => {
+      updateTimer(Math.max(0, duration - getElapsed()));
+    }, 1000);
+    document.getElementById('winner-banner').style.display = "none";
+    toggleLeaderboard(false); // Always hide when starting a race
+  }
+  const raceTrack = document.getElementById('race-track');
+  const winnerBanner = document.getElementById('winner-banner');
+  let duration = 60, timerId = null, winnerIndex = -1;
+  let startTimestamp = null;
+  let carSpeeds = [];
+  let finished = false;
+
+  function renderRace() {
+    raceTrack.innerHTML = "";
+    let maxRows = Math.max(names.length, 6);
+    let baseHeight = Math.max(46, Math.min(80, Math.floor((window.innerHeight*0.78)/maxRows)));
+    let emojiSize = Math.max(1.3, Math.min(2.5, baseHeight/16));
+    let labelSize = Math.max(0.95, Math.min(1.14, baseHeight/23));
+    let progressHeight = Math.max(18, Math.min(32, baseHeight*0.46));
+    (teams.length?teams:names.map((n,i)=>({name:n,bike:bikeEmojis[i%2],color:colorInfo[i%colorInfo.length].color,colorName:colorInfo[i%colorInfo.length].name}))).forEach((t, i) => {
+      const row = document.createElement('div');
+      row.className = "bike-row";
+      row.style.height = (baseHeight+18) + "px";
+      row.innerHTML = `
+        <div class="bike-label" style="font-size:${labelSize}em;">
+          <span class="bike-color" style="color:${t.color};">${t.colorName}</span>
+          ${t.name}
+        </div>
+        <div class="progress-bar-bg" id="bar-bg${i}" style="height:${progressHeight}px;">
+          <div class="progress-bar-fg" id="bar-fg${i}" style="background:${t.color};width:0%"></div>
+          <span class="bike-emoji-ontrack" id="bike-emoji-${i}" style="font-size:${emojiSize}em;">${t.bike}</span>
+          <span class="finish-flag">🏁</span>
+        </div>
+      `;
+      raceTrack.appendChild(row);
+    });
+  }
+  function getElapsed() {
+    if (!startTimestamp) return 0;
+    return ((performance.now() - startTimestamp) / 1000);
+  }
+  function updateTimer(remaining) {
+    const dur = Math.max(0, Math.round(remaining));
+    const min = String(Math.floor(dur / 60)).padStart(2, '0');
+    const sec = String(dur % 60).padStart(2, '0');
+    document.getElementById('timer').textContent = `${min}:${sec}`;
+  }
+  function animateBikes(ts) {
+    if (finished) return;
+    if (!startTimestamp) startTimestamp = ts;
+    const elapsed = (ts - startTimestamp) / 1000;
+    const cappedElapsed = Math.min(elapsed, duration);
+
+    teams.forEach((t, i) => {
+      let target = Math.min(1, (cappedElapsed / duration) * carSpeeds[i]);
+      if (cappedElapsed >= duration) target = 1;
+      const barFg = document.getElementById('bar-fg'+i);
+      const barBg = document.getElementById('bar-bg'+i);
+      const emojiOnTrack = document.getElementById('bike-emoji-'+i);
+      if (barFg && barBg && emojiOnTrack) {
+        barFg.style.width = (target * 100) + "%";
+        // Move the emoji smoothly on top of the bar, facing right
+        let maxLeft = barBg.offsetWidth - emojiOnTrack.offsetWidth;
+        emojiOnTrack.style.left = Math.max(2, target * (barBg.offsetWidth - 35)) + "px";
+      }
+    });
+
+    if (cappedElapsed < duration) {
+      requestAnimationFrame(animateBikes);
+    } else {
+      finishRace();
+    }
+  }
+
+  function finishRace() {
+    finished = true;
+    clearInterval(timerId);
+    let maxDist = Math.max(...carSpeeds);
+    let leaders = carSpeeds.map((spd, i) => spd === maxDist ? i : -1).filter(i => i >= 0);
+    winnerIndex = leaders[Math.floor(Math.random() * leaders.length)];
+    setTimeout(() => {
+      if (winnerIndex >= 0) {
+        document.getElementById('bike-emoji-' + winnerIndex).classList.add('winner');
+        winnerBanner.innerHTML = `🏆 Winner: <span style="color:${teams[winnerIndex].color};">${teams[winnerIndex].bike} ${teams[winnerIndex].colorName} (${teams[winnerIndex].name})</span>`;
+        winnerBanner.style.display = "block";
+        scores[winnerIndex]++;
+        renderLeaderboard();
+        toggleLeaderboard(true); // Show leaderboard after race ends
+      }
+    }, 350);
+  }
+
+  function renderLeaderboard() {
+    let arr = teams.map((t, idx) => ({ ...t, wins: scores[idx], idx }));
+    arr.sort((a, b) => b.wins - a.wins);
+    let rows = arr.map((t, i) =>
+      `<tr>
+        <td>${t.bike} <span style="color:${t.color};font-weight:bold">${t.colorName}</span></td>
+        <td class="${i === 0 && t.wins > 0 ? 'first-place' : ''}">${t.name}</td>
+        <td>${t.wins || 0}</td>
+      </tr>`
+    ).join('');
+    document.getElementById('leaderboard').querySelector('tbody').innerHTML = rows;
+  }
+
+  // Initial rendering
+  renderNamesList();
+  renderRace();
+  renderLeaderboard();
+</script>
+</body>
+</html>
