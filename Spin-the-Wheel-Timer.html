@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Spin-the-Wheel Star Picker (Up to 180 Minutes)</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f6f6ff;
+      text-align: center;
+      padding: 40px;
+    }
+    .wheel-container {
+      margin: 0 auto 30px;
+      width: 600px;
+      height: 600px;
+      position: relative;
+    }
+    canvas {
+      border-radius: 50%;
+      box-shadow: 0 0 30px #8888cc;
+      display: block;
+    }
+    .pointer-star {
+      position: absolute;
+      left: 270px;
+      top: 40px;
+      width: 60px;
+      height: 60px;
+      pointer-events: none;
+      z-index: 10;
+    }
+    .inputs {
+      margin: 18px 0 30px;
+    }
+    textarea {
+      width: 400px;
+      height: 60px;
+      font-size: 1em;
+    }
+    select {
+      font-size: 1em;
+      padding: 2px 6px;
+    }
+    .winner {
+      font-size: 2em;
+      margin: 24px 0;
+      color: #20a920;
+      font-weight: bold;
+      letter-spacing: 2px;
+    }
+    .timer {
+      font-size: 1.4em;
+      margin: 12px 0 22px;
+      color: #3533dd;
+    }
+    button {
+      font-size: 1.1em;
+      padding: 7px 22px;
+      margin-top: 8px;
+      background: #4f7ff7;
+      color: #fff;
+      border: none;
+      border-radius: 7px;
+      cursor: pointer;
+    }
+    button:active {
+      background: #344fd8;
+    }
+  </style>
+</head>
+<body>
+  <h2>Spin-the-Wheel Timer Picker</h2>
+  <div class="inputs">
+    <div>
+      <label>Names (comma or new line):</label><br>
+      <textarea id="names" placeholder="Enter names, separated by comma or line"></textarea>
+    </div>
+    <div style="margin-top:12px;">
+      <label>Timer (minutes):</label>
+      <select id="duration"></select>
+      <button onclick="startWheel()" id="startBtn">Start Wheel</button>
+    </div>
+  </div>
+  <div class="timer" id="timer"></div>
+  <div class="wheel-container">
+    <svg class="pointer-star" width="60" height="60" viewBox="0 0 60 60">
+      <defs>
+        <linearGradient id="gold-star" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stop-color="#ffe066"/>
+          <stop offset="60%" stop-color="#ffd700"/>
+          <stop offset="100%" stop-color="#bfa140"/>
+        </linearGradient>
+      </defs>
+      <polygon
+        points="30,10 36,26 54,26 39,36 44,52 30,43 16,52 21,36 6,26 24,26"
+        fill="url(#gold-star)"
+        stroke="#997300" stroke-width="2"
+      />
+      <circle cx="30" cy="23" r="7" fill="#fff4" />
+    </svg>
+    <canvas id="wheel" width="600" height="600"></canvas>
+  </div>
+  <div class="winner" id="winner"></div>
+
+  <script>
+    // Pastel palette (repeat as needed)
+    const pastelColors = [
+      "#aee7ff", "#ffe3ac", "#ffd6e0", "#d4f8e8", "#fff6b7",
+      "#d9f0ff", "#ffedd6", "#e3f6fc", "#f5f7c4", "#f3e6ff"
+    ];
+
+    // Populate minutes dropdown up to 180
+    for (let i = 1; i <= 180; i++) {
+      let opt = document.createElement('option');
+      opt.value = i;
+      opt.textContent = i + (i === 1 ? " minute" : " minutes");
+      if (i === 1) opt.selected = true;
+      document.getElementById('duration').appendChild(opt);
+    }
+
+    const canvas = document.getElementById("wheel");
+    const ctx = canvas.getContext("2d");
+    const wheelRadius = 290;
+    let names = ["a", "b", "c", "d"];
+    let angle = 0;
+    let spinning = false;
+    let winnerIndex = null;
+    let timerId = null, spinId = null;
+    let duration = 1, timeLeft = 60;
+    let startTime = null;
+    let speed = 0, slowdown = false;
+
+    function drawWheel() {
+      ctx.clearRect(0, 0, 600, 600);
+      let n = names.length;
+      if (n === 0) return;
+      for (let i = 0; i < n; i++) {
+        ctx.beginPath();
+        ctx.moveTo(300, 300);
+        let startAngle = angle - Math.PI/2 + i * 2 * Math.PI / n;
+        let endAngle = angle - Math.PI/2 + (i+1) * 2 * Math.PI / n;
+        ctx.arc(300, 300, wheelRadius, startAngle, endAngle, false);
+        ctx.closePath();
+        ctx.fillStyle = pastelColors[i % pastelColors.length];
+        ctx.fill();
+        ctx.strokeStyle = "#fff";
+        ctx.lineWidth = 2;
+        ctx.stroke();
+
+        // Name text
+        ctx.save();
+        ctx.translate(300, 300);
+        ctx.rotate(startAngle + (endAngle-startAngle)/2);
+        ctx.textAlign = "right";
+        ctx.font = "24px Arial";
+        ctx.fillStyle = "#2e2e2e";
+        ctx.fillText(names[i], wheelRadius-20, 10);
+        ctx.restore();
+      }
+    }
+
+    function spinWheel(ts) {
+      if (!spinning) return;
+      if (!startTime) startTime = ts;
+
+      if (slowdown) {
+        speed *= 0.985;
+        if (speed < 0.003) {
+          speed = 0;
+          spinning = false;
+          pickWinner();
+          return;
+        }
+      }
+      angle += speed;
+      angle %= (2 * Math.PI);
+      drawWheel();
+      spinId = requestAnimationFrame(spinWheel);
+    }
+
+    function pickWinner() {
+      let n = names.length;
+      let segmentAngle = 2 * Math.PI / n;
+      let pointerTipX = 270 + 30;
+      let pointerTipY = 40 + 10;
+      let pointerAngle = Math.atan2(pointerTipY - 300, pointerTipX - 300);
+      let a = (pointerAngle - angle + Math.PI/2 + 2 * Math.PI) % (2 * Math.PI);
+      let selected = Math.floor(a / segmentAngle) % n;
+      winnerIndex = selected;
+      document.getElementById("winner").innerText = `🎉 Winner: ${names[winnerIndex]}! 🎉`;
+      document.getElementById("startBtn").disabled = false;
+    }
+
+    function startWheel() {
+      names = document.getElementById("names").value.split(/,|\n/).map(s => s.trim()).filter(Boolean);
+      if (names.length < 2) {
+        alert("Please enter at least 2 names!");
+        return;
+      }
+      duration = parseInt(document.getElementById("duration").value, 10) || 1;
+      timeLeft = duration * 60;
+
+      angle = 0;
+      speed = 0.03 + Math.random() * 0.012;
+      spinning = true;
+      slowdown = false;
+      winnerIndex = null;
+      startTime = null;
+      document.getElementById("winner").innerText = "";
+      updateTimerDisplay();
+      document.getElementById("startBtn").disabled = true;
+
+      drawWheel();
+      requestAnimationFrame(spinWheel);
+
+      if (timerId) clearInterval(timerId);
+      timerId = setInterval(() => {
+        timeLeft--;
+        updateTimerDisplay();
+        if (timeLeft <= 0) {
+          clearInterval(timerId);
+          document.getElementById("timer").innerText = `Time's up!`;
+          slowdown = true;
+        }
+      }, 1000);
+    }
+
+    function updateTimerDisplay() {
+      let m = Math.floor(timeLeft / 60);
+      let s = timeLeft % 60;
+      document.getElementById("timer").innerText = `Time left: ${m}:${s.toString().padStart(2, '0')}`;
+    }
+
+    drawWheel();
+
+    document.getElementById("names").addEventListener("input", () => {
+      document.getElementById("winner").innerText = "";
+      document.getElementById("startBtn").disabled = false;
+    });
+  </script>
+</body>
+</html>
