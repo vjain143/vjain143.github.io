@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Simple Bike Race Progress</title>
+  <style>
+    html, body {
+      height: 100%; width: 100vw;
+      margin: 0; padding: 0; box-sizing: border-box;
+      overflow: hidden;
+      background: #fff;
+    }
+    body {
+      min-height: 100vh;
+      width: 100vw;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
+      border: 8px solid #1877ff;
+      border-radius: 32px;
+      background: #fff;
+      position: relative;
+    }
+    .header-area {
+      width: 100vw;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 2vh;
+      margin-bottom: 1.5vh;
+      z-index: 10;
+      pointer-events: none;
+      position: relative;
+    }
+    .timer {
+      font-size: 2.2em;
+      font-weight: bold;
+      color: #263048;
+      margin-bottom: 0.5em;
+      letter-spacing: 1px;
+      z-index: 10;
+      pointer-events: auto;
+    }
+    .controls {
+      color: #263048;
+      font-size: 1.13em;
+      margin-bottom: 0.5em;
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      gap: 1em;
+      pointer-events: auto;
+    }
+    input[type="number"] {
+      width: 60px; font-size: 1em;
+      border-radius: 6px; border: 1px solid #aaa;
+      padding: 4px 8px; margin-left: 10px;
+    }
+    button {
+      font-size: 1em; padding: 6px 18px; margin-left: 12px;
+      border: none; border-radius: 8px;
+      background: #1877ff;
+      color: #fff; font-weight: bold; cursor: pointer;
+      box-shadow: 1px 1px 4px #e1eaff; transition: background 0.2s;
+    }
+    button:hover { background: #135cd1; }
+
+    .winner-banner {
+      min-height: 44px;
+      margin-bottom: 10px;
+      margin-top: 6px;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5em;
+      font-weight: bold;
+      border-radius: 16px;
+      background: #e9f6e0;
+      color: #226e19;
+      box-shadow: 0 4px 12px #b8ffc785;
+      padding: 0.3em 1.2em 0.3em 1.2em;
+      z-index: 20;
+      border: 2px solid #90e59e;
+      min-width: 180px;
+      text-align: center;
+      animation: winnerPop 0.5s;
+      pointer-events: auto;
+    }
+    @keyframes winnerPop {
+      0% { transform: scale(0.6);}
+      70% { transform: scale(1.1);}
+      100% { transform: scale(1);}
+    }
+
+    .frame {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      width: 100vw; height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1;
+      background: transparent;
+      pointer-events: none;
+    }
+    .race-track {
+      position: relative;
+      width: 97vw; height: 81vh; min-width: 260px; min-height: 260px;
+      background: #f8fafd;
+      border-radius: 26px;
+      box-shadow: 0 3px 18px #c7d9f0cc inset;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-evenly;
+      align-items: stretch;
+      border: 3px solid #cce1fa;
+      padding-left: 2vw;
+      padding-right: 2vw;
+      box-sizing: border-box;
+      margin-top: 8vh;
+      margin-bottom: 4vh;
+      pointer-events: auto;
+    }
+    .car-row {
+      display: flex; align-items: center; position: relative;
+      height: 16%;
+      min-height: 50px;
+      width: 100%;
+      z-index: 2;
+    }
+    .car-label {
+      font-size: 1.09em;
+      font-weight: bold;
+      margin-right: 16px;
+      min-width: 112px;
+      margin-left: 10px;
+      letter-spacing: 1px;
+      user-select: none;
+      color: #263048;
+      white-space: nowrap;
+      overflow: visible;
+      z-index: 3;
+    }
+    .progress-bar-bg {
+      position: relative;
+      flex: 1;
+      height: 16px;
+      background: #e3ecf6;
+      border-radius: 10px;
+      margin: 0 4vw 0 0;
+      box-shadow: 1px 1px 3px #e2e5eb90;
+      overflow: visible;
+      border: 1.2px solid #bed7ed;
+      z-index: 3;
+    }
+    .progress-bar-fg {
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      height: 100%;
+      border-radius: 10px;
+      transition: width 0.15s linear;
+      z-index: 2;
+      opacity: 0.85;
+    }
+    .car-emoji {
+      font-size: 2em;
+      position: absolute;
+      top: 50%;
+      left: 0;
+      transform: translate(-55%, -50%) scaleX(-1);
+      transition: left 0.15s linear;
+      user-select: none;
+      z-index: 10;
+    }
+    .finish-flag {
+      position: absolute;
+      right: -2vw;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 1.7em;
+      color: #1961c9;
+      z-index: 20;
+    }
+    .winner {
+      animation: winner-flash 0.45s alternate infinite;
+    }
+    @keyframes winner-flash {
+      0% { filter: brightness(1) drop-shadow(0 0 7px #b8ffc7);}
+      100% { filter: brightness(1.9) drop-shadow(0 0 15px #6af690);}
+    }
+    @media (max-width:800px) {
+      .car-label { font-size: 1em; min-width: 70px; margin-right: 7px; margin-left: 5px;}
+      .car-emoji { font-size: 1.3em;}
+      .progress-bar-bg { height: 10px; }
+      .finish-flag { font-size: 1.2em; right: -5vw;}
+      .race-track { min-width: 110px; padding-left: 0.5vw; padding-right: 0.5vw;}
+    }
+    @media (max-width:500px) {
+      .race-track { border-radius: 11px; min-height: 120px; }
+      .header-area { margin-top: 1vh; }
+      .car-label { min-width: 36px; font-size: 0.8em;}
+      .winner-banner { min-width: 85px; font-size: 1em; padding: 0.22em 0.5em;}
+    }
+  </style>
+</head>
+<body>
+  <div class="header-area">
+    <div class="timer" id="timer">00:00</div>
+    <div class="controls">
+      <span>Time (min):</span>
+      <input id="race-time" type="number" min="1" max="60" value="1" />
+      <button onclick="startRace()">Start Race</button>
+    </div>
+    <div id="winner-banner" class="winner-banner"></div>
+  </div>
+  <div class="frame">
+    <div class="race-track" id="race-track"></div>
+  </div>
+  <script>
+    // All teams use only 🚴‍♂️ or 🚴‍♀️
+    const teams = [
+      { name: "Speedster",      emoji: "🚴‍♂️", color: "#e0115f" },
+      { name: "Blue Comet",     emoji: "🚴‍♀️", color: "#1c89ff" },
+      { name: "Rocket Rider",   emoji: "🚴‍♂️", color: "#5cb85c" },
+      { name: "Yellow Flash",   emoji: "🚴‍♀️", color: "#f8cd00" },
+      { name: "Steel Cyclone",  emoji: "🚴‍♂️", color: "#808080" }
+    ];
+    const raceTrack = document.getElementById('race-track');
+    const winnerBanner = document.getElementById('winner-banner');
+    let duration = 60, timerId = null, winnerIndex = -1;
+    let startTimestamp = null;
+    let carSpeeds = [];
+    let finished = false;
+
+    function renderRace() {
+      raceTrack.innerHTML = "";
+      teams.forEach((t, i) => {
+        const row = document.createElement('div');
+        row.className = "car-row";
+        row.innerHTML = `
+          <span class="car-label">${t.emoji} ${t.name}</span>
+          <div class="progress-bar-bg" id="bar-bg${i}">
+            <div class="progress-bar-fg" id="bar-fg${i}" style="background:${t.color};width:0%"></div>
+            <span class="car-emoji" id="car${i}" style="color:${t.color}">${t.emoji}</span>
+            <span class="finish-flag">🏁</span>
+          </div>
+        `;
+        raceTrack.appendChild(row);
+      });
+      winnerBanner.style.display = "none";
+    }
+
+    function startRace() {
+      duration = Math.max(1, Math.min(60, +document.getElementById('race-time').value)) * 60;
+      winnerIndex = -1;
+      finished = false;
+      carSpeeds = teams.map(() => 0.97 + Math.random() * 0.1);
+      renderRace();
+      updateTimer(duration);
+      startTimestamp = null;
+      if (timerId) clearInterval(timerId);
+      requestAnimationFrame(animateCars);
+      timerId = setInterval(() => {
+        updateTimer(Math.max(0, duration - getElapsed()));
+      }, 1000);
+    }
+
+    function getElapsed() {
+      if (!startTimestamp) return 0;
+      return ((performance.now() - startTimestamp) / 1000);
+    }
+
+    function updateTimer(remaining) {
+      const dur = Math.max(0, Math.round(remaining));
+      const min = String(Math.floor(dur / 60)).padStart(2, '0');
+      const sec = String(dur % 60).padStart(2, '0');
+      document.getElementById('timer').textContent = `${min}:${sec}`;
+    }
+
+    function animateCars(ts) {
+      if (finished) return;
+      if (!startTimestamp) startTimestamp = ts;
+      const elapsed = (ts - startTimestamp) / 1000;
+      const cappedElapsed = Math.min(elapsed, duration);
+
+      teams.forEach((t, i) => {
+        let target = Math.min(1, (cappedElapsed / duration) * carSpeeds[i]);
+        if (cappedElapsed >= duration) target = 1;
+        const barFg = document.getElementById('bar-fg'+i);
+        const car = document.getElementById('car'+i);
+        const barBg = document.getElementById('bar-bg'+i);
+        if (barFg && car && barBg) {
+          barFg.style.width = (target * 100) + "%";
+          const barWidth = barBg.offsetWidth;
+          car.style.left = (target * barWidth) + "px";
+        }
+      });
+
+      if (cappedElapsed < duration) {
+        requestAnimationFrame(animateCars);
+      } else {
+        finishRace();
+      }
+    }
+
+    function finishRace() {
+      finished = true;
+      clearInterval(timerId);
+      let maxDist = Math.max(...carSpeeds);
+      let leaders = carSpeeds.map((spd, i) => spd === maxDist ? i : -1).filter(i => i >= 0);
+      winnerIndex = leaders[Math.floor(Math.random() * leaders.length)];
+      setTimeout(() => {
+        if (winnerIndex >= 0) {
+          document.getElementById('car'+winnerIndex).classList.add('winner');
+          winnerBanner.innerHTML = `🏆 Winner: <span style="color:${teams[winnerIndex].color}">${teams[winnerIndex].emoji} ${teams[winnerIndex].name}</span>`;
+          winnerBanner.style.display = "flex";
+        }
+      }, 350);
+    }
+
+    renderRace();
+    window.addEventListener('resize', () => {
+      if (!startTimestamp) return;
+      const elapsed = Math.min(duration, getElapsed());
+      teams.forEach((t, i) => {
+        let target = Math.min(1, (elapsed / duration) * carSpeeds[i]);
+        if (elapsed >= duration) target = 1;
+        const barFg = document.getElementById('bar-fg'+i);
+        const car = document.getElementById('car'+i);
+        const barBg = document.getElementById('bar-bg'+i);
+        if (barFg && car && barBg) {
+          barFg.style.width = (target * 100) + "%";
+          const barWidth = barBg.offsetWidth;
+          car.style.left = (target * barWidth) + "px";
+        }
+      });
+    });
+  </script>
+</body>
+</html>
