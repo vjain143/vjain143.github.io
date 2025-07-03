@@ -1,4 +1,4 @@
 # vjain143.github.io
 
-[Car Timer](Timer_Cars.html).
-[Bike Timer](Timer_Bikes.html).
+- [Car Timer](Timer_Cars.html)
+- [Bike Timer](Timer_Bikes.html)
