@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Trino Memory Calculator</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #f7f9fa; margin: 0; padding: 2rem;}
+    .container { max-width: 740px; margin: 0 auto; background: #fff; border-radius: 14px; box-shadow: 0 4px 16px #bbc4; padding: 2.5rem 2rem 2rem;}
+    h2 { text-align: center; margin-bottom: 1.1em; }
+    .setting { margin-bottom: 2em; }
+    .label { font-size: 1.08rem; margin-bottom: 0.3rem; display: flex; align-items: center; gap: 8px;}
+    .tooltip {
+      cursor: pointer; color: #246ad1; border-radius: 50%; background: #eaf3fc; width: 1.2em; height: 1.2em; display: inline-flex; align-items: center; justify-content: center; font-size: 1em; position: relative;
+    }
+    .tooltip-text {
+      display: none; position: absolute; left: 50%; top: 130%; transform: translateX(-50%);
+      background: #23272d; color: #fff; padding: 9px 13px; border-radius: 7px; font-size: 0.98em; width: 350px; z-index: 99; box-shadow: 0 2px 8px #0003;
+    }
+    .tooltip:hover .tooltip-text, .tooltip:focus .tooltip-text { display: block; }
+    .value { font-weight: bold; color: #3a52cc;}
+    .bar { width: 100%; }
+    .output { background: #f5f7fa; border-radius: 10px; padding: 1.2rem; font-family: monospace; margin-top: 1.3em; font-size: 1.1em;}
+    .warn { color: #b84d1c; font-weight: bold; padding: 7px 0;}
+    .note, .guidelines { background: #eaf3fc; border-left: 4px solid #246ad1; border-radius: 7px; padding: 1.1em 1em; margin-bottom: 2em; color: #23314a;}
+    .guidelines { background: #f6f0fc; border-color: #9c3ce5;}
+    .small { font-size: 0.98em; color: #626d7c;}
+    .row { display: flex; align-items: center; gap: 1.1em;}
+    @media (max-width: 600px) {
+      .container { padding: 1rem; }
+      .tooltip-text { width: 92vw; min-width: 200px;}
+      .guidelines, .note { padding: 0.85em 0.6em;}
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="guidelines">
+      <b>Trino Memory Sizing Guidelines</b><br>
+      <ul style="margin:0.4em 0 0.4em 1.2em;">
+        <li><b>Total Node Memory:</b> Set to the physical RAM (in GB) of each Trino worker node (excluding OS needs).</li>
+        <li><b>JVM Heap (-Xmx):</b> <span style="color:#944cc7;">70–80% of node memory</span>. The rest is for OS, file cache, and off-heap buffers.</li>
+        <li><b>JVM Headroom:</b> <span style="color:#944cc7;">~30% of JVM heap</span> (never set lower than 2GB). Prevents JVM OutOfMemory.</li>
+        <li><b>Query Max Memory Per Node:</b> <span style="color:#944cc7;">~30% of JVM heap</span>. Allows larger queries, but too high reduces concurrency and headroom.</li>
+        <li><b>Query Max Memory (Cluster):</b> Per Node × Worker Nodes.</li>
+        <li><b>Query Max Total Memory:</b> Usually double Query Max Memory (Cluster); this is the hard limit.</li>
+        <li>All settings must respect constraints and not exceed available heap or cluster memory.</li>
+      </ul>
+      <div class="small" style="margin-top:0.7em;">
+        <b>Best practice:</b> Start with these guidelines, test with real workloads, and tune based on JVM and Trino metrics.<br>
+        See: <a href="https://trino.io/docs/current/admin/properties-resource-management.html" target="_blank">Trino Resource Management Docs</a>
+      </div>
+    </div>
+
+    <h2>Trino Memory Config Calculator</h2>
+    
+    <div class="setting row">
+      <div class="label">
+        Number of Worker Nodes
+        <span class="tooltip" tabindex="0">ℹ️
+          <span class="tooltip-text">
+            The number of Trino worker nodes in your cluster. This affects cluster-wide query memory calculation.
+          </span>
+        </span>
+      </div>
+      <input id="nodes" type="number" value="4" min="1" max="128" style="width:60px; margin-left: 10px;">
+    </div>
+
+    <div class="setting">
+      <div class="label">
+        Total Node Memory (<span class="value" id="totalMemVal">64</span> GB)
+        <span class="tooltip" tabindex="0">ℹ️
+          <span class="tooltip-text">
+            The total physical RAM available on a single Trino worker node (in GB).<br>
+            <b>Tip:</b> Always leave some memory for the OS and other processes.
+          </span>
+        </span>
+      </div>
+      <input class="bar" id="totalMem" type="range" min="32" max="256" value="64">
+    </div>
+    
+    <div class="setting">
+      <div class="label">
+        JVM Max Heap (-Xmx, <span class="value" id="jvmVal">48</span> GB)
+        <span class="tooltip" tabindex="0">ℹ️
+          <span class="tooltip-text">
+            Heap for the Java Virtual Machine running Trino.<br>
+            <b>Recommended:</b> 70–80% of total node memory.<br>
+            <b>Don't</b> set too high or you'll risk swapping and performance drops!
+          </span>
+        </span>
+      </div>
+      <input class="bar" id="jvm" type="range" min="8" max="256" value="48">
+    </div>
+    
+    <div class="setting">
+      <div class="label">
+        JVM Headroom (<span class="value" id="headroomVal">14</span> GB)
+        <span class="tooltip" tabindex="0">ℹ️
+          <span class="tooltip-text">
+            Reserved heap for JVM overhead (thread stacks, allocations, garbage collection).<br>
+            <b>Recommended:</b> 30% of JVM heap, minimum 2GB.<br>
+            Too low risks OutOfMemoryError!
+          </span>
+        </span>
+      </div>
+      <input class="bar" id="headroom" type="range" min="2" max="64" value="14">
+    </div>
+    
+    <div class="setting">
+      <div class="label">
+        Query Max Memory <i>per node</i> (<span class="value" id="qNodeVal">14</span> GB)
+        <span class="tooltip" tabindex="0">ℹ️
+          <span class="tooltip-text">
+            Maximum memory (per node) that can be used for a single query.<br>
+            <b>Recommended:</b> 30% of JVM heap.<br>
+            <b>Constraint:</b> (Query Max Memory per node + JVM Headroom) &lt; JVM Max Heap.
+          </span>
+        </span>
+      </div>
+      <input class="bar" id="qNode" type="range" min="1" max="192" value="14">
+    </div>
+    
+    <div class="setting">
+      <div class="label">
+        Query Max Memory <i>(cluster-wide)</i> (<span class="value" id="qClusterVal">56</span> GB)
+        <span class="tooltip" tabindex="0">ℹ️
+          <span class="tooltip-text">
+            Maximum memory for a single query, summed across all worker nodes.<br>
+            <b>Formula:</b> Query Max Memory per node × Worker Nodes.
+          </span>
+        </span>
+      </div>
+      <input class="bar" id="qCluster" type="range" min="1" max="2048" value="56">
+    </div>
+    
+    <div class="setting">
+      <div class="label">
+        Query Max Total Memory (<span class="value" id="qTotalVal">112</span> GB)
+        <span class="tooltip" tabindex="0">ℹ️
+          <span class="tooltip-text">
+            Hard upper bound on memory for a query (usually double Query Max Memory cluster-wide).<br>
+            <b>Constraint:</b> Must be ≥ Query Max Memory (cluster-wide).
+          </span>
+        </span>
+      </div>
+      <input class="bar" id="qTotal" type="range" min="1" max="4096" value="112">
+    </div>
+    
+    <div class="warn" id="warning"></div>
+    <h3 style="margin-top:1.7em;">Generated Trino Config</h3>
+    <div class="output" id="output"></div>
+
+    <div class="note" style="margin-top:1.5em;">
+      <b>Notes & Validation Tips:</b>
+      <ul style="margin:0.4em 0 0.3em 1.2em;">
+        <li>If you see warnings above, adjust sliders to resolve them before applying config.</li>
+        <li>Test with production-like loads and monitor JVM/Trino metrics after deploying.</li>
+        <li>Revisit and tune settings as your cluster or query patterns evolve.</li>
+        <li>For advanced resource management (like resource groups), see the <a href="https://trino.io/docs/current/admin/resource-groups.html" target="_blank">official docs</a>.</li>
+      </ul>
+      <div class="small">This calculator provides a guideline and safe starting point. Final tuning should always be data-driven.</div>
+    </div>
+  </div>
+  
+  <script>
+    function clamp(val, min, max) { return Math.max(min, Math.min(val, max)); }
+    function update(source) {
+      let nodes = +document.getElementById('nodes').value;
+      let total = +document.getElementById('totalMem').value;
+      let jvm = +document.getElementById('jvm').value;
+      let head = +document.getElementById('headroom').value;
+      let qnode = +document.getElementById('qNode').value;
+      let qcluster = +document.getElementById('qCluster').value;
+      let qtotal = +document.getElementById('qTotal').value;
+
+      if(source==='total' || source==='nodes'){
+        jvm = clamp(Math.round(total * 0.75), 8, total-2);
+        document.getElementById('jvm').value = jvm;
+        head = clamp(Math.round(jvm * 0.3), 2, jvm-4);
+        document.getElementById('headroom').value = head;
+        qnode = clamp(Math.round(jvm * 0.3), 1, jvm-head-1);
+        document.getElementById('qNode').value = qnode;
+        qcluster = clamp(qnode * nodes, 1, 4096);
+        document.getElementById('qCluster').value = qcluster;
+        qtotal = clamp(qcluster * 2, qcluster, 4096);
+        document.getElementById('qTotal').value = qtotal;
+      }
+      else if(source==='jvm'){
+        total = clamp(jvm + 2, 32, 256);
+        document.getElementById('totalMem').value = total;
+        head = clamp(Math.round(jvm * 0.3), 2, jvm-4);
+        document.getElementById('headroom').value = head;
+        qnode = clamp(Math.round(jvm * 0.3), 1, jvm-head-1);
+        document.getElementById('qNode').value = qnode;
+        qcluster = clamp(qnode * nodes, 1, 4096);
+        document.getElementById('qCluster').value = qcluster;
+        qtotal = clamp(qcluster * 2, qcluster, 4096);
+        document.getElementById('qTotal').value = qtotal;
+      }
+      else if(source==='headroom'){
+        head = clamp(head, 2, jvm-4);
+        document.getElementById('headroom').value = head;
+        qnode = clamp(qnode, 1, jvm-head-1);
+        document.getElementById('qNode').value = qnode;
+        qcluster = clamp(qnode * nodes, 1, 4096);
+        document.getElementById('qCluster').value = qcluster;
+        qtotal = clamp(qcluster * 2, qcluster, 4096);
+        document.getElementById('qTotal').value = qtotal;
+      }
+      else if(source==='qNode'){
+        qnode = clamp(qnode, 1, jvm-head-1);
+        document.getElementById('qNode').value = qnode;
+        qcluster = clamp(qnode * nodes, 1, 4096);
+        document.getElementById('qCluster').value = qcluster;
+        qtotal = clamp(qcluster * 2, qcluster, 4096);
+        document.getElementById('qTotal').value = qtotal;
+      }
+      else if(source==='qCluster'){
+        qcluster = clamp(qcluster, 1, 4096);
+        qnode = clamp(Math.floor(qcluster / nodes), 1, jvm-head-1);
+        document.getElementById('qNode').value = qnode;
+        qcluster = qnode * nodes;
+        document.getElementById('qCluster').value = qcluster;
+        qtotal = clamp(qcluster * 2, qcluster, 4096);
+        document.getElementById('qTotal').value = qtotal;
+      }
+      else if(source==='qTotal'){
+        qtotal = clamp(qtotal, qcluster, 4096);
+        document.getElementById('qTotal').value = qtotal;
+      }
+
+      document.getElementById('totalMemVal').textContent = document.getElementById('totalMem').value;
+      document.getElementById('jvmVal').textContent = document.getElementById('jvm').value;
+      document.getElementById('headroomVal').textContent = document.getElementById('headroom').value;
+      document.getElementById('qNodeVal').textContent = document.getElementById('qNode').value;
+      document.getElementById('qClusterVal').textContent = document.getElementById('qCluster').value;
+      document.getElementById('qTotalVal').textContent = document.getElementById('qTotal').value;
+
+      // Warnings
+      let warnMsg = "";
+      if(+document.getElementById('jvm').value > +document.getElementById('totalMem').value - 2) {
+        warnMsg += "⚠️ JVM max heap should be at least 1-2GB less than total node memory.<br>";
+      }
+      if(+document.getElementById('headroom').value < 2) {
+        warnMsg += "⚠️ JVM headroom is low. <b>Recommended minimum: 2GB</b>.<br>";
+      }
+      if(+document.getElementById('headroom').value > +document.getElementById('jvm').value * 0.5) {
+        warnMsg += "⚠️ JVM headroom is unusually high. This may waste memory for queries.<br>";
+      }
+      if(+document.getElementById('qNode').value + +document.getElementById('headroom').value > +document.getElementById('jvm').value) {
+        warnMsg += "⚠️ (Query Max Memory per node + Headroom) exceeds JVM heap. Lower one or both.<br>";
+      }
+      if(+document.getElementById('qTotal').value < +document.getElementById('qCluster').value) {
+        warnMsg += "⚠️ Query Max Total Memory should be at least as high as Query Max Memory (cluster-wide).<br>";
+      }
+      document.getElementById('warning').innerHTML = warnMsg;
+
+      const config = `
+-Xmx${document.getElementById('jvm').value}G
+memory.heap-headroom-per-node=${document.getElementById('headroom').value}GB
+query.max-memory-per-node=${document.getElementById('qNode').value}GB
+query.max-memory=${document.getElementById('qCluster').value}GB
+query.max-total-memory=${document.getElementById('qTotal').value}GB
+      `.trim();
+      document.getElementById('output').textContent = config;
+    }
+
+    document.getElementById('nodes').addEventListener('input', ()=>update('nodes'));
+    document.getElementById('totalMem').addEventListener('input', ()=>update('total'));
+    document.getElementById('jvm').addEventListener('input', ()=>update('jvm'));
+    document.getElementById('headroom').addEventListener('input', ()=>update('headroom'));
+    document.getElementById('qNode').addEventListener('input', ()=>update('qNode'));
+    document.getElementById('qCluster').addEventListener('input', ()=>update('qCluster'));
+    document.getElementById('qTotal').addEventListener('input', ()=>update('qTotal'));
+    update('total');
+  </script>
+</body>
+</html>
