@@ -5,3 +5,4 @@ Countdown Timers “Who Finishes First” Challenge
 - [Bike Timer](Timer_Bikes.html)
 - [Timer Bikes Leaderboard](Timer_Bikes_Leaderboard.html)
 - [Spin-the-Wheel-Timer](Spin-the-Wheel-Timer.html)
+- [Dice](Dice.html)
