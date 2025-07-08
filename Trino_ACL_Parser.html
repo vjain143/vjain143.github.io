@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Trino ACL JSON Parser</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #f9f9f9; padding: 32px; }
+    textarea { width: 100%; height: 120px; font-size: 1em; padding: 8px; }
+    button { margin: 12px 0; padding: 8px 24px; font-size: 1em; cursor: pointer; }
+    table { border-collapse: collapse; width: 100%; margin-top: 18px; background: #fff; box-shadow: 0 2px 6px #0001; }
+    th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+    th { background: #ececec; }
+    .error { color: #b22222; font-weight: bold; margin-top: 10px; }
+  </style>
+</head>
+<body>
+  <h2>Trino ACL JSON Parser</h2>
+  <p>Paste your Trino ACL JSON below:</p>
+  <textarea id="jsonInput">[
+  {
+    "user": "alice",
+    "catalog": "hive",
+    "schema": "sales",
+    "table": "orders",
+    "privileges": ["SELECT", "INSERT"]
+  },
+  {
+    "user": "bob",
+    "catalog": "mysql",
+    "schema": "marketing",
+    "table": "leads",
+    "privileges": ["SELECT"]
+  }
+]</textarea>
+  <br>
+  <button onclick="parseACL()">Parse</button>
+  <div class="error" id="error"></div>
+  <div id="output"></div>
+  <script>
+    function parseACL() {
+      const input = document.getElementById('jsonInput').value;
+      const errorDiv = document.getElementById('error');
+      const outputDiv = document.getElementById('output');
+      errorDiv.textContent = '';
+      outputDiv.innerHTML = '';
+      let data;
+      try {
+        data = JSON.parse(input);
+        if (!Array.isArray(data)) throw new Error('Top-level JSON should be an array of ACL objects.');
+        if (data.length === 0) {
+          outputDiv.innerHTML = '<em>No ACL entries found.</em>';
+          return;
+        }
+      } catch (e) {
+        errorDiv.textContent = 'Invalid JSON: ' + e.message;
+        return;
+      }
+
+      // Get all unique keys for table headers (in case entries vary)
+      const columns = Array.from(
+        new Set(data.flatMap(Object.keys))
+      );
+
+      // Build table
+      let html = '<table><tr>' +
+        columns.map(col => `<th>${col}</th>`).join('') +
+        '</tr>';
+
+      for (const row of data) {
+        html += '<tr>' +
+          columns.map(col => {
+            let val = row[col];
+            if (Array.isArray(val)) val = val.join(', ');
+            if (val === undefined) val = '';
+            return `<td>${val}</td>`;
+          }).join('') +
+          '</tr>';
+      }
+      html += '</table>';
+      outputDiv.innerHTML = html;
+    }
+
+    // Parse once at load
+    window.onload = parseACL;
+  </script>
+</body>
+</html>
