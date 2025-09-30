@@ -24,7 +24,7 @@ Trino ACL JSON is static and cluster-local:
 
 {
   "catalogs": {
-    "cosmos": {
+    "datacatalog": {
       "allow": [
         {
           "principal": "finance-analyst",
