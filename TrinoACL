@@ -1,58 +1,216 @@
-🚀 From Static Trino ACLs to a Policy-Driven Future
-
-Author: Vivek Jain
-
-⸻
-
-🌍 Introduction
-
-Trino’s native ACL JSON access-control mechanism works for small setups, but as data platforms evolve into multi-cluster, multi-domain data meshes, static JSON files quickly become a bottleneck.
-
-They lack:
-	•	🔒 Auditability
-	•	⚡ Flexibility for fine-grained access
-	•	🧩 Delegation to domain teams
-	•	🚀 Dynamic attribute-based rules (ABAC)
-
-That’s why we’re transitioning to a policy engine (e.g., OPA / Open Policy Agent) — where access control is centralized, GitOps-driven, and dynamic.
-
-⸻
-
-🏁 The Starting Point: ACL JSON
-
-Trino ACL JSON is static and cluster-local:
-
-{
-  "catalogs": {
-    "cosmos": {
-      "allow": [
-        {
-          "principal": "finance-analyst",
-          "privileges": ["SELECT"],
-          "schemas": ["transactions"],
-          "tables": ["payments"]
-        }
-      ]
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Trino ACL → Policy Engine — Secure, Auditable, GitOps-Ready</title>
+  <meta name="description" content="Move from static Trino ACL JSON to a centralized policy engine (OPA) with GitOps, ABAC, and audit logs.">
+  <style>
+    :root{
+      --bg:#0b0f17;
+      --card:#101827;
+      --ink:#e5e7eb;
+      --muted:#9ca3af;
+      --brand:#7c3aed; /* violet-600 */
+      --brand-2:#22d3ee; /* cyan-400 */
+      --accent:#10b981; /* emerald-500 */
+      --warn:#f59e0b; /* amber-500 */
+      --shadow:0 10px 30px rgba(0,0,0,.35);
+      --radius:18px;
     }
-  }
+    *{box-sizing:border-box}
+    html,body{margin:0;height:100%;background:radial-gradient(1200px 600px at 80% -10%, rgba(124,58,237,.22), transparent 60%), 
+                         radial-gradient(900px 500px at -10% 10%, rgba(34,211,238,.18), transparent 55%), var(--bg); 
+               color:var(--ink); font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Arial, "Apple Color Emoji","Segoe UI Emoji";}
+    a{color:inherit;text-decoration:none}
+    .wrap{max-width:1100px;margin:0 auto;padding:28px}
+    header{position:sticky;top:0;background:linear-gradient(180deg, rgba(11,15,23,.85), rgba(11,15,23,.65));backdrop-filter: blur(10px);z-index:40;border-bottom:1px solid rgba(255,255,255,.06)}
+    nav{display:flex;align-items:center;gap:18px;justify-content:space-between}
+    .brand{display:flex;align-items:center;gap:12px;font-weight:700;letter-spacing:.2px}
+    .logo{width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,var(--brand),var(--brand-2));box-shadow:var(--shadow)}
+    .menu{display:flex;gap:18px;font-size:14px;color:var(--muted)}
+    .menu a{padding:8px 10px;border-radius:10px}
+    .menu a:hover{color:var(--ink);background:rgba(255,255,255,.05)}
+    .btn{display:inline-flex;align-items:center;gap:10px;padding:12px 18px;border-radius:14px;
+         background:linear-gradient(135deg,var(--brand),var(--brand-2));color:white;font-weight:700;box-shadow:var(--shadow);border:0;cursor:pointer}
+    .btn.ghost{background:transparent;border:1px solid rgba(255,255,255,.15);font-weight:600}
+    .hero{display:grid;grid-template-columns:1.2fr .8fr;gap:28px;align-items:center;margin-top:28px}
+    .badge{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border:1px solid rgba(255,255,255,.15);border-radius:999px;color:var(--muted);font-size:12px}
+    .h1{font-size:44px;line-height:1.05;margin:14px 0 10px}
+    .lede{color:var(--muted);font-size:18px}
+    .card{background:linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.015)); border:1px solid rgba(255,255,255,.08);
+          border-radius:var(--radius);box-shadow:var(--shadow)}
+    .hero-visual{padding:18px}
+    .metric{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:16px}
+    .kpi{padding:16px;border-radius:16px;background:rgba(255,255,255,.04);border:1px dashed rgba(255,255,255,.12);text-align:center}
+    .kpi .num{font-size:26px;font-weight:800}
+    .kpi .lbl{font-size:12px;color:var(--muted)}
+    .section{margin-top:60px}
+    .section h2{font-size:28px;margin:0 0 12px}
+    .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+    .tile{padding:18px;border-radius:16px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03)}
+    .tile h3{margin:6px 0 8px;font-size:18px}
+    .small{color:var(--muted);font-size:14px}
+    .code{font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; font-size:13px; white-space:pre; overflow:auto;
+          padding:14px;border-radius:14px;background:#0a0f16;border:1px solid rgba(255,255,255,.08)}
+    .lane{display:grid;grid-template-columns:repeat(7,1fr);gap:12px;margin-top:16px}
+    .step{padding:14px;border-radius:12px;background:rgba(124,58,237,.08);border:1px solid rgba(124,58,237,.25)}
+    .step span{display:block;font-size:12px;color:var(--muted)}
+    .cta{display:flex;gap:12px;margin-top:18px;flex-wrap:wrap}
+    .foot{margin-top:60px;padding:26px;border-top:1px solid rgba(255,255,255,.08);color:var(--muted);display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
+    .note{border-left:4px solid var(--accent);padding:12px 14px;background:rgba(16,185,129,.08);border-radius:10px}
+    .warn{border-left:4px solid var(--warn);padding:12px 14px;background:rgba(245,158,11,.08);border-radius:10px}
+    .chip{display:inline-flex;align-items:center;gap:8px;padding:6px 10px;border:1px solid rgba(255,255,255,.12);border-radius:999px;font-size:12px;color:var(--muted)}
+    @media (max-width: 900px){ .hero{grid-template-columns:1fr} .grid{grid-template-columns:1fr} .lane{grid-template-columns:1fr} }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap">
+      <nav>
+        <div class="brand">
+          <div class="logo"></div>
+          <div>Trino Policy Engine</div>
+        </div>
+        <div class="menu">
+          <a href="#why">Why</a>
+          <a href="#how">How</a>
+          <a href="#phases">Phases</a>
+          <a href="#code">Code</a>
+          <a href="#cta"><b>Get Started</b></a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <!-- HERO -->
+    <section class="hero">
+      <div>
+        <div class="badge">
+          <span>New</span> • From static ACL JSON to dynamic, auditable authorization
+        </div>
+        <h1 class="h1">Upgrade Trino Security: <br/>From <em>ACL JSON</em> to a <strong>Policy‑Driven</strong> future</h1>
+        <p class="lede">Centralize authorization with OPA, ship changes via GitOps, unlock ABAC, and get audit‑ready — without slowing queries.</p>
+        <div class="cta">
+          <a href="#cta" class="btn">Book a 30‑min Architecture Review</a>
+          <a href="#why" class="btn ghost">See why teams switch →</a>
+        </div>
+        <div class="metric">
+          <div class="kpi"><div class="num">≤10ms</div><div class="lbl">Policy eval overhead</div></div>
+          <div class="kpi"><div class="num">100%</div><div class="lbl">ACL parity at Phase 1</div></div>
+          <div class="kpi"><div class="num">24×7</div><div class="lbl">Decision audit trail</div></div>
+        </div>
+      </div>
+      <div class="hero-visual card">
+        <div class="chip">Trino</div>
+        <div style="height:8px"></div>
+        <div class="code">
+input := {
+  "principal": "finance-analyst",
+  "catalog": "cosmos",
+  "schema": "transactions",
+  "table": "payments",
+  "privilege": "SELECT",
+  "user_region": "EU",
+  "column_sensitivity": "PII"
 }
 
-✅ Works fine in single cluster setups.
-❌ Doesn’t scale for multi-domain federated meshes.
+allow {
+  input.privilege == "SELECT"
+  input.user_region == "EU"
+  input.column_sensitivity != "Restricted"
+}
+        </div>
+        <div style="height:10px"></div>
+        <div class="small" style="color:var(--muted)">OPA evaluates <em>context‑aware</em> policies at query‑time. Ship via GitOps, audit every decision.</div>
+      </div>
+    </section>
 
-⸻
+    <!-- WHY -->
+    <section id="why" class="section">
+      <h2>Why move beyond static ACLs?</h2>
+      <div class="grid">
+        <div class="tile">
+          <h3>Auditability</h3>
+          <p class="small">Every decision is logged. Stream to SIEM or your audit lake for continuous evidence.</p>
+        </div>
+        <div class="tile">
+          <h3>Human‑Readable Policies</h3>
+          <p class="small">Express complex row/column rules in Rego/YAML. No more brittle JSON sprawl.</p>
+        </div>
+        <div class="tile">
+          <h3>GitOps & Delegation</h3>
+          <p class="small">Policies live in Git with PR reviews. Domains own their namespaces without breaking global rules.</p>
+        </div>
+      </div>
+      <div style="height:12px"></div>
+      <div class="note">
+        <strong>Outcome:</strong> Centralized, version‑controlled authorization with domain autonomy and full observability.
+      </div>
+    </section>
 
-🔑 The Transition Journey (Mira Stories)
+    <!-- HOW -->
+    <section id="how" class="section">
+      <h2>How it works</h2>
+      <div class="grid">
+        <div class="tile">
+          <h3>Trino ↔ AuthZ Hook</h3>
+          <p class="small">Trino queries call a lightweight sidecar/plugin which asks the policy engine for a decision.</p>
+        </div>
+        <div class="tile">
+          <h3>OPA / Policy Engine</h3>
+          <p class="small">Evaluates RBAC + ABAC rules with context (identity, data tags, time, region, sensitivity).</p>
+        </div>
+        <div class="tile">
+          <h3>Observability</h3>
+          <p class="small">Decision logs shipped to ELK/Grafana/SIEM. Build dashboards for reviews & attestation.</p>
+        </div>
+      </div>
+      <div style="height:12px"></div>
+      <div class="warn">
+        <strong>Compatibility:</strong> Phase 1 maintains complete policy parity with existing ACL JSON to ensure a safe cutover.
+      </div>
+    </section>
 
-We framed the transition as Mira-style user stories to align platform, security, and compliance goals.
+    <!-- PHASES -->
+    <section id="phases" class="section">
+      <h2>The Roadmap</h2>
+      <div class="lane">
+        <div class="step"><b>1. Baseline</b><span>Mirror ACL JSON → OPA</span></div>
+        <div class="step"><b>2. GitOps</b><span>Policies in Git + PR flow</span></div>
+        <div class="step"><b>3. Fine‑Grained</b><span>Catalog/Schema/View/Function</span></div>
+        <div class="step"><b>4. Delegation</b><span>Per‑domain namespaces</span></div>
+        <div class="step"><b>5. Audit</b><span>Decision logs → SIEM</span></div>
+        <div class="step"><b>6. ABAC</b><span>Dynamic attributes</span></div>
+        <div class="step"><b>7. Optimize</b><span>Cache & partial eval</span></div>
+      </div>
+    </section>
 
-⸻
+    <!-- CODE -->
+    <section id="code" class="section">
+      <h2>From ACL JSON → Rego (example)</h2>
+      <div class="grid">
+        <div class="tile">
+          <h3>Before (ACL JSON)</h3>
+          <div class="code">{
+  "catalogs": {
+    "cosmos": {
+      "allow": [{
+        "principal": "finance-analyst",
+        "privileges": ["SELECT"],
+        "schemas": ["transactions"],
+        "tables": ["payments"]
+      }]
+    }
+  }
+}</div>
+        </div>
+        <div class="tile">
+          <h3>After (Policy)</h3>
+          <div class="code">package trino.authz
 
-Phase 1 — Baseline Migration
-	•	As a Data Platform Engineer, I want to replace static ACL JSON files with a central policy engine, so that access control is consistent and auditable across clusters.
-	•	Mirror ACL JSON → OPA policies (Rego).
-
-package trino.authz
+default allow = false
 
 allow {
   input.principal == "finance-analyst"
@@ -60,83 +218,54 @@ allow {
   input.schema == "transactions"
   input.table == "payments"
   input.privilege == "SELECT"
-}
-
-
-⸻
-
-Phase 2 — Human-Readable & GitOps
-	•	As a Security Lead, I want to define policies in human-readable language instead of rigid JSON rules.
-	•	Policies managed in Git repos, deployed via ArgoCD/Flux.
-
-⸻
-
-Phase 3 — Fine-Grained Controls
-	•	As a Trino Administrator, I want to enforce permissions at catalog, schema, table, view, and function levels.
-	•	Add CI/CD testing harness for policy changes.
-
-⸻
-
-Phase 4 — Delegated Domain Policies
-	•	As a Data Mesh Owner, I want to delegate policy ownership to domains.
-	•	Domain-driven policy namespaces.
-
-⸻
-
-Phase 5 — Compliance & Audit
-	•	As a Compliance Officer, I want to log and audit every policy decision.
-	•	Push decision logs into SIEM / audit lake → visualize with Grafana.
-
-⸻
-
-Phase 6 — Attribute-Based Access (ABAC)
-	•	As a Security Architect, I want to combine RBAC with ABAC.
-	•	Example: restrict PII access to EU analysts only.
-
-allow {
+}</div>
+        </div>
+        <div class="tile">
+          <h3>ABAC Enrichment</h3>
+          <div class="code">allow {
   input.role == "data-analyst"
   input.column_sensitivity == "PII"
   input.user_region == "EU"
-}
+  time.now_ns() >= time.parse_rfc3339_ns("2025-01-01T00:00:00Z")
+}</div>
+        </div>
+      </div>
+    </section>
 
+    <!-- CTA -->
+    <section id="cta" class="section card" style="padding:24px">
+      <h2>Ready to modernize Trino authorization?</h2>
+      <p class="small">We’ll review your current ACL JSONs, map them to policy modules, set up GitOps, and enable audit trails — usually in days, not months.</p>
+      <div class="cta">
+        <a class="btn" href="mailto:contact@example.com?subject=Trino%20Policy%20Engine%20Review">Request Architecture Review</a>
+        <a class="btn ghost" href="#phases">View migration phases</a>
+        <a class="btn ghost" href="#code">See example code</a>
+      </div>
+      <div style="height:10px"></div>
+      <div class="small" style="color:var(--muted)">Need a tailored POC on your stack (Kubernetes, ArgoCD/Flux, OpenMetadata tags, Trino functions)? We can deliver a week-long sprint.</div>
+    </section>
 
-⸻
+    <!-- FOOTER -->
+    <footer class="foot">
+      <div>© 2025 Trino Policy Engine — Built for Data Mesh & Compliance</div>
+      <div>
+        <a href="#why">Why</a> · <a href="#how">How</a> · <a href="#phases">Phases</a> · <a href="#code">Code</a>
+      </div>
+    </footer>
+  </main>
 
-Phase 7 — Performance Optimization
-	•	As a Performance Engineer, I want authorization checks to be <10ms.
-	•	Enable caching / partial evaluation in the policy engine.
-
-⸻
-
-📊 Evolution Diagram
-
-flowchart LR
-    A[Static ACL JSON] --> B[Centralized Policy Engine]
-    B --> C[GitOps-managed Policies]
-    C --> D[Fine-Grained Controls]
-    D --> E[Delegated Domain Ownership]
-    E --> F[Audit & Compliance Logs]
-    F --> G[Dynamic ABAC Rules]
-    G --> H[Optimized Low-Latency Policy Engine]
-
-
-⸻
-
-🏆 End State
-
-By the end of this journey, Trino authorization will be:
-	•	✅ Centralized & consistent across clusters
-	•	✅ Version-controlled with GitOps
-	•	✅ Auditable & compliance-ready
-	•	✅ Delegated to domain owners
-	•	✅ Hybrid RBAC + ABAC for dynamic access
-	•	✅ Optimized for performance
-
-⸻
-
-🔮 Conclusion
-
-Moving from ACL JSON → Policy Engine is not just a technical shift.
-It’s a governance transformation: giving platform teams, domain owners, and compliance officers a unified model to express, enforce, and audit access policies in a scalable way.
-
-This journey ensures that Trino evolves from a static cluster engine into a secure, compliant, and dynamic data mesh backbone.
+  <script>
+    // Smooth scrolling for internal anchors
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', e => {
+        const id = a.getAttribute('href').slice(1);
+        const el = document.getElementById(id);
+        if(el){
+          e.preventDefault();
+          el.scrollIntoView({behavior:'smooth', block:'start'});
+        }
+      })
+    });
+  </script>
+</body>
+</html>
