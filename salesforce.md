@@ -23,7 +23,7 @@ I am currently on a 60-day notice period at J.P. Morgan. I’m happy to make sur
 4. “What are your salary expectations?”
 
 Answer:
-My current total compensation at J.P. Morgan is around €X, which includes a base salary of €145, a bonus of around €30-40, and benefits. However, I’m looking for a role with greater impact and growth potential, which is why I’m exploring opportunities at Salesforce.
+My current total compensation at J.P. Morgan is around €175, which includes a base salary of €145, a bonus of around €30, and benefits. However, I’m looking for a role with greater impact and growth potential, which is why I’m exploring opportunities at Salesforce.
 
 ⸻
 
