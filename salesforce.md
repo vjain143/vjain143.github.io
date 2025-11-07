@@ -30,20 +30,23 @@ My current total compensation at J.P. Morgan is around €X, which includes a ba
 5. “Why are you looking to leave your current job?”
 
 Answer:
-I’ve had a deeply fulfilling journey at J.P. Morgan, delivering enterprise-scale transformations in the cyber intelligence space. However, I’m now looking for an opportunity where I can work closer to product engineering, collaborate directly on platform innovation across industries, and influence platform strategy at a more global scale. Salesforce’s commitment to trusted platforms, APIs, and enablement of low-code/no-code ecosystems is inspiring — and I’m excited to help drive the next evolution of cloud-native and AI-powered platform engineering at Salesforce.
+I’ve had a highly impactful journey at J.P. Morgan, leading large-scale transformation programs in cyber intelligence space. 
+However, I’m now looking for an opportunity where I can work closer to product engineering, collaborate directly on platform innovation across industries, and influence platform strategy at a more global scale. 
+Salesforce’s commitment to trusted platforms, APIs, and enablement of low-code/no-code ecosystems is inspiring — and I’m excited to help drive the next evolution of cloud-native and AI-powered platform engineering at Salesforce.
 
 ⸻
 
 6. “What are your strengths?”
 
 Answer:
-	•	Driving large-scale cloud transformation with a strong blend of architecture and hands-on delivery
-	•	Building data and metadata platforms that unify analytics, governance, and developer experience
-	•	Leading global, cross-functional engineering teams with a focus on innovation, ownership, and technical excellence
+	•	Leading large-scale cloud transformations by combining strategic architecture with hands-on engineering execution
+	•	Architecting unified data and metadata platforms that bring together analytics, governance, and seamless developer experiences
+	•	Managing and mentoring global, cross-functional engineering teams with a strong culture of innovation, accountability, and technical excellence
 
 ⸻
 
 7. “What are your areas of improvement?”
 
 Answer:
-In the past, I’ve leaned into technical execution deeply, sometimes at the expense of delegating early. Over time, I’ve worked consciously to scale my leadership — empowering teams with greater ownersh
+In the past, I used to take on too much of the technical work myself instead of sharing it early with the team. 
+Over time, I’ve learned to step back, trust my team more, and let them take ownership. This has helped me grow as a leader and strengthened the team.
