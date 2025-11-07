@@ -2,30 +2,28 @@
 1. “Can you tell me about yourself?”
 
 Answer:
-I am a hands-on engineering leader with over 18 years of experience designing and scaling enterprise-grade platforms, with a specialization in cloud-native architectures, data mesh, and secure automation. Most recently, at J.P. Morgan, I led the design and rollout of the firm’s first Kubernetes-based Cyber Data Mesh, delivering “SQL-on-anything” analytics across dozens of cyber domains and reducing operational cost by 30%. I thrive at the intersection of technical strategy and team mentorship, and I’m passionate about building intelligent, scalable platforms that empower business users and developers alike. Salesforce’s mission to build trusted and innovative cloud platforms aligns strongly with my experience and aspirations.
+I’m a hands-on engineering leader with over 18 years of experience designing and scaling enterprise software platforms. My key strengths are in cybersecurity, data mesh architecture, and secure automation. At J.P. Morgan, I recently led the development of the firm’s first Data Mesh, which allows teams to query any data source using “select * from anything” and successfully reduced platform costs by 30%. I enjoy solving complex technical problems while mentoring and leading cross-functional teams. I’m passionate about building smart, scalable platforms that empower both developers and business users. I’m especially excited about Salesforce because its focus on trust, innovation, and powerful cloud platforms strongly aligns with my experience and future goals.
 
 ⸻
 
 2. “Why are you interested in this position at Salesforce?”
 
 Answer:
-Salesforce is at the forefront of empowering organizations with scalable, secure, and intelligent cloud applications — which resonates deeply with my experience and values. I’ve long admired Salesforce’s customer-first innovation and platform-driven culture, especially around API-first development, trust, and responsible AI. I see this role as an ideal opportunity to bring my expertise in distributed systems, metadata-driven automation, and cross-cloud architecture into a high-impact, globally scaled environment. I’m particularly excited by Salesforce initiatives like Hyperforce, Genie, and the integration of AI-driven insights into enterprise workflows — and I believe I can contribute meaningfully to that evolution.
+Salesforce is a leader in helping companies build scalable, secure, and intelligent cloud applications, which strongly matches my skills and interests. I’ve always admired Salesforce for its focus on customers, strong platform culture, and dedication to trust and responsible AI. This role feels like a great fit because I can bring my experience in distributed systems, automated platforms, and cross-cloud architecture to a global, high-impact team. I’m especially excited about projects like Agentforce and Salesforce’s work in bringing AI-driven insights into business workflows. I’d love to contribute to that future and be part of Salesforce’s next chapter of innovation.
 
 ⸻
 
 3. “What is your current notice period?”
 
 Answer:
-I am currently on a 30-day notice period at J.P. Morgan. However, I’m committed to ensuring a smooth transition and could explore flexibility if needed to align with Salesforce’s timelines.
+I am currently on a 60-day notice period at J.P. Morgan. I’m happy to make sure there is a smooth handover of my work, and I can be flexible with the timeline if needed to match Salesforce’s requirements.
 
 ⸻
 
 4. “What are your salary expectations?”
 
 Answer:
-Given the senior leadership and technical scope of the role, market data for similar positions at Salesforce, and my experience across enterprise modernization and platform engineering, I would expect a total compensation in the range of €X to €Y. That said, I’m open to the company structure and benefits discussion and am more focused on long-term impact and growth opportunities within Salesforce.
-
-(If you’d like, I can suggest a specific range based on L11/L12 bands or Director/Sr. Director comp benchmarks.)
+My current total compensation at J.P. Morgan is around €X, which includes a base salary of €145, a bonus of around €30-40, and benefits. However, I’m looking for a role with greater impact and growth potential, which is why I’m exploring opportunities at Salesforce.
 
 ⸻
 
