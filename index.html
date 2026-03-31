@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vivek Jain | Data &amp; Platform Projects</title>
+    <meta
+      name="description"
+      content="Vivek Jain's project website featuring Trino engineering tools, interactive utilities, and technical writing."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&amp;family=Work+Sans:wght@400;500;600&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="bg-shape bg-shape-left" aria-hidden="true"></div>
+    <div class="bg-shape bg-shape-right" aria-hidden="true"></div>
+
+    <header class="topbar">
+      <div class="container topbar-inner">
+        <a class="brand" href="#">Vivek Jain</a>
+        <nav class="nav-links" aria-label="Primary">
+          <a href="#projects">Projects</a>
+          <a href="#tools">Tools</a>
+          <a href="#writing">Writing</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="container">
+      <section class="hero reveal">
+        <p class="eyebrow">Data Platform Engineering</p>
+        <h1>Building practical tools for Trino operations and performance.</h1>
+        <p class="hero-copy">
+          I design lightweight, production-minded utilities that help teams
+          monitor systems, size infrastructure, and run technical workflows with
+          less friction.
+        </p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#projects">Explore Projects</a>
+          <a class="btn btn-secondary" href="#writing">Read Article</a>
+        </div>
+      </section>
+
+      <section class="metrics reveal" aria-label="Site statistics">
+        <article class="metric-card">
+          <p class="metric-value">6+</p>
+          <p class="metric-label">Interactive Tools</p>
+        </article>
+        <article class="metric-card">
+          <p class="metric-value">3</p>
+          <p class="metric-label">Trino Utilities</p>
+        </article>
+        <article class="metric-card">
+          <p class="metric-value">1</p>
+          <p class="metric-label">Published Deep Dive</p>
+        </article>
+      </section>
+
+      <section id="projects" class="section reveal">
+        <div class="section-head">
+          <h2>Featured Projects</h2>
+          <p>Focused tools for Trino architecture, governance, and observability.</p>
+        </div>
+        <div class="card-grid">
+          <article class="project-card">
+            <h3>Trino Memory Sizing Guidelines</h3>
+            <p>Reference-driven sizing helper for coordinator and worker memory strategy.</p>
+            <a href="Trino_Memory_Sizing_Guidelines.html">Open Tool</a>
+          </article>
+          <article class="project-card">
+            <h3>Trino ACL Parser</h3>
+            <p>Parse and inspect ACL configurations quickly for policy validation and review.</p>
+            <a href="Trino_ACL_Parser.html">Open Tool</a>
+          </article>
+          <article class="project-card">
+            <h3>Trino ACL Playground</h3>
+            <p>Explore ACL behavior interactively to speed up troubleshooting and testing.</p>
+            <a href="TrinoACL.html">Open Tool</a>
+          </article>
+        </div>
+      </section>
+
+      <section id="tools" class="section reveal">
+        <div class="section-head">
+          <h2>Interactive Utilities</h2>
+          <p>Small web-based utilities built for quick execution and demos.</p>
+        </div>
+        <div class="card-grid card-grid-2">
+          <article class="project-card">
+            <h3>Cars Race Timer</h3>
+            <p>Track race countdowns and finish ordering for timed competitions.</p>
+            <a href="Timer_Cars.html">Launch</a>
+          </article>
+          <article class="project-card">
+            <h3>Bikes Race Timer</h3>
+            <p>Custom countdown timer optimized for bike challenge scenarios.</p>
+            <a href="Timer_Bikes.html">Launch</a>
+          </article>
+          <article class="project-card">
+            <h3>Bikes Leaderboard</h3>
+            <p>Leaderboard view for comparing results across bike race participants.</p>
+            <a href="Timer_Bikes_Leaderboard.html">Launch</a>
+          </article>
+          <article class="project-card">
+            <h3>Spin-the-Wheel Timer</h3>
+            <p>Randomized timer selector with game-like interaction for activities.</p>
+            <a href="Spin-the-Wheel-Timer.html">Launch</a>
+          </article>
+          <article class="project-card">
+            <h3>Dice Tool</h3>
+            <p>Simple, fast dice utility for random outcomes during sessions.</p>
+            <a href="Dice.html">Launch</a>
+          </article>
+        </div>
+      </section>
+
+      <section id="writing" class="section highlight reveal">
+        <div class="section-head">
+          <h2>Technical Writing</h2>
+        </div>
+        <p>
+          10 Must-Have SQL Queries to Monitor Trino: practical SQL checks for
+          query behavior, health indicators, and performance insights.
+        </p>
+        <a
+          class="btn btn-primary"
+          href="https://medium.com/@vjain143/10-must-have-sql-queries-to-monitor-trino-unlocking-insights-from-the-trino-events-trino-queries-035f0cc27d80"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Read on Medium
+        </a>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="container footer-inner">
+        <p>&copy; <span id="year"></span> Vivek Jain</p>
+        <a href="https://github.com/vjain143" target="_blank" rel="noopener noreferrer">
+          GitHub
+        </a>
+      </div>
+    </footer>
+
+    <script>
+      document.getElementById("year").textContent = new Date().getFullYear();
+    </script>
+  </body>
+</html>
