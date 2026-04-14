@@ -27,6 +27,7 @@
         <nav class="nav-links" aria-label="Primary navigation">
           <a href="#about">About</a>
           <a href="#federated">Federated Quasar</a>
+          <a href="#agentic">Agentic MCP</a>
           <a href="#flow">Flow</a>
           <a href="#projects">Projects</a>
           <a href="/medium.html">Articles</a>
@@ -66,7 +67,7 @@
           <ul class="quick-facts">
             <li>Distributed system design for cyber operations</li>
             <li>Metadata-to-policy automation</li>
-            <li>Zero-trust style decision pipelines</li>
+            <li>Data quality + agentic governance pipelines</li>
           </ul>
         </div>
 
@@ -80,6 +81,8 @@
           </p>
           <div class="tech-stack" aria-label="Core stack">
             <span>Trino</span>
+            <span>Trino MCP</span>
+            <span>OpenMetadata MCP</span>
             <span>dbt</span>
             <span>OpenMetadata</span>
             <span>Moat</span>
@@ -131,6 +134,7 @@
             <ul class="check-list">
               <li>Executes distributed dbt workflows against Trino via Governance Execution Engine</li>
               <li>Publishes technical and business metadata into OpenMetadata as a shared source of truth</li>
+              <li>Adds data quality checks and scorecards into the delivery path</li>
               <li>Transforms metadata into security policy bundles through Moat + OPA</li>
               <li>Enforces low-latency authorization decisions directly in Trino</li>
             </ul>
@@ -180,6 +184,81 @@
         </div>
       </section>
 
+      <section id="agentic" class="wrap section reveal">
+        <div class="section-head">
+          <h2>Agentic MCP + Data Quality Layer</h2>
+          <p>
+            On top of Trino, I build an MCP-powered agentic layer that joins
+            execution context from Trino MCP and metadata context from
+            OpenMetadata MCP.
+          </p>
+        </div>
+
+        <div class="feature-grid">
+          <article class="card card-strong">
+            <h3>Joined MCP Architecture</h3>
+            <ul class="check-list">
+              <li>Trino MCP exposes query, schema, and execution context for AI agents</li>
+              <li>OpenMetadata MCP exposes lineage, ownership, tags, and glossary context</li>
+              <li>Federation layer joins both MCP outputs into one policy and quality context</li>
+              <li>Agentic planner uses joined context to generate safe SQL and governed actions</li>
+            </ul>
+          </article>
+
+          <div class="metric-grid">
+            <article class="metric-card">
+              <p class="metric-value">2</p>
+              <p class="metric-label">MCP sources joined</p>
+            </article>
+            <article class="metric-card">
+              <p class="metric-value">1</p>
+              <p class="metric-label">Federated decision context</p>
+            </article>
+            <article class="metric-card">
+              <p class="metric-value">DQ</p>
+              <p class="metric-label">Data quality gates before publish</p>
+            </article>
+            <article class="metric-card">
+              <p class="metric-value">RAG</p>
+              <p class="metric-label">Agentic metadata retrieval path</p>
+            </article>
+          </div>
+        </div>
+
+        <div class="flow-grid mcp-flow">
+          <article class="flow-card">
+            <span>M1</span>
+            <h3>Trino MCP</h3>
+            <p>Capture runtime context, query patterns, and table-level execution metadata.</p>
+          </article>
+          <article class="flow-card">
+            <span>M2</span>
+            <h3>OpenMetadata MCP</h3>
+            <p>Capture lineage, ownership, tags, and semantic metadata for governance reasoning.</p>
+          </article>
+          <article class="flow-card">
+            <span>M3</span>
+            <h3>Context Join Layer</h3>
+            <p>Join Trino MCP + OpenMetadata MCP payloads into a single policy-aware context.</p>
+          </article>
+          <article class="flow-card">
+            <span>M4</span>
+            <h3>Data Quality Gate</h3>
+            <p>Apply freshness, completeness, and validity checks before agent-led actions.</p>
+          </article>
+          <article class="flow-card">
+            <span>M5</span>
+            <h3>Agentic Planner</h3>
+            <p>Use joined context to generate safe SQL/API actions with policy constraints.</p>
+          </article>
+          <article class="flow-card">
+            <span>M6</span>
+            <h3>Governed Execution</h3>
+            <p>Execute through Trino with auditable decisions, policy checks, and quality evidence.</p>
+          </article>
+        </div>
+      </section>
+
       <section id="flow" class="wrap section reveal">
         <div class="section-head">
           <h2>End-to-End Cyber Governance Flow</h2>
@@ -198,8 +277,8 @@
           </article>
           <article class="flow-card">
             <span>03</span>
-            <h3>Ingest Security Context</h3>
-            <p>Push Trino and dbt artifacts into OpenMetadata for governance context.</p>
+            <h3>Ingest Metadata + Data Quality Context</h3>
+            <p>Push Trino and dbt artifacts into OpenMetadata with data quality checkpoints.</p>
           </article>
           <article class="flow-card">
             <span>04</span>
