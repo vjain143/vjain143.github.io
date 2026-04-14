@@ -38,8 +38,8 @@
           <h1>Kubernetes Components POC Showcase</h1>
           <p>
             Dedicated view of the areas implemented under
-            <code>federated-quasar/kube/components</code> with visual POCs and
-            code excerpts.
+            <code>federated-quasar/kube/components</code> with area highlights
+            and code excerpts.
           </p>
         </div>
 
@@ -64,70 +64,93 @@ kubectl apply -k kube/components/aix</code></pre>
           </article>
         </div>
 
-        <div class="component-logo-grid">
-          <figure class="component-figure">
-            <img
-              src="/assets/federated-quasar-overview.png"
-              alt="Federated Quasar architecture overview"
-              loading="lazy"
-            />
-            <figcaption>Federated Quasar architecture overview POC</figcaption>
-          </figure>
-          <figure class="component-figure">
-            <img
-              src="/assets/moat-opa-flow.png"
-              alt="Moat and OPA deployment flow"
-              loading="lazy"
-            />
-            <figcaption>Moat + OPA authorization flow POC</figcaption>
-          </figure>
-        </div>
-
         <div class="area-grid">
           <article class="area-card">
-            <h3>FQ Execution Plane</h3>
+            <h3>Federated Query Execution Plane</h3>
             <p>Namespace-scoped execution plane with Trino + orchestration + storage services.</p>
-            <p class="area-tags">gex | trino | hms | minio | mysql | kestra</p>
+            <p>GEX (Governance Execution Engine) is custom made.</p>
+            <div class="area-links">
+              <a href="https://github.com/vjain143/federated-quasar/tree/main/docker/gex" target="_blank" rel="noopener noreferrer">gex (custom)</a>
+              <a href="https://trino.io/" target="_blank" rel="noopener noreferrer">trino</a>
+              <a href="https://hive.apache.org/" target="_blank" rel="noopener noreferrer">hms</a>
+              <a href="https://min.io/" target="_blank" rel="noopener noreferrer">minio</a>
+              <a href="https://www.mysql.com/" target="_blank" rel="noopener noreferrer">mysql</a>
+              <a href="https://kestra.io/" target="_blank" rel="noopener noreferrer">kestra</a>
+            </div>
           </article>
           <article class="area-card">
             <h3>OM Metadata Plane</h3>
             <p>OpenMetadata runtime with server, ingestion, search, and relational backing.</p>
-            <p class="area-tags">om-server | om-ingestion | om-elasticsearch | om-mysql</p>
+            <div class="area-links">
+              <a href="https://open-metadata.org/" target="_blank" rel="noopener noreferrer">om-server</a>
+              <a href="https://docs.open-metadata.org/connectors/ingestion" target="_blank" rel="noopener noreferrer">om-ingestion</a>
+              <a href="https://www.elastic.co/elasticsearch" target="_blank" rel="noopener noreferrer">om-elasticsearch</a>
+              <a href="https://www.mysql.com/" target="_blank" rel="noopener noreferrer">om-mysql</a>
+            </div>
           </article>
           <article class="area-card">
             <h3>UMF Unified Metadata Fabric</h3>
             <p>Dedicated metadata fabric for multi-engine governance boundaries.</p>
-            <p class="area-tags">umf-gravitino | umf-mysql</p>
+            <p>UMF has metadata details and DB.</p>
+            <div class="area-links">
+              <a href="https://gravitino.apache.org/" target="_blank" rel="noopener noreferrer">umf-gravitino</a>
+              <a href="https://www.mysql.com/" target="_blank" rel="noopener noreferrer">umf-mysql</a>
+            </div>
           </article>
           <article class="area-card">
             <h3>AIX Authorization Exchange</h3>
             <p>Policy intelligence and decision enforcement for runtime authorization.</p>
-            <p class="area-tags">moat | opa | mysql</p>
+            <div class="area-links">
+              <a href="https://github.com/vjain143/federated-quasar/tree/main/docker/moat" target="_blank" rel="noopener noreferrer">moat</a>
+              <a href="https://www.openpolicyagent.org/" target="_blank" rel="noopener noreferrer">opa</a>
+              <a href="https://www.mysql.com/" target="_blank" rel="noopener noreferrer">mysql</a>
+            </div>
           </article>
           <article class="area-card">
-            <h3>Data Catalog POCs</h3>
+            <h3>Data Catalog</h3>
             <p>Alternative metadata/catalog backbones to validate federation patterns.</p>
-            <p class="area-tags">gravitino | nessie | polaris</p>
+            <div class="area-links">
+              <a href="https://gravitino.apache.org/" target="_blank" rel="noopener noreferrer">gravitino</a>
+              <a href="https://projectnessie.org/" target="_blank" rel="noopener noreferrer">nessie</a>
+              <a href="https://polaris.apache.org/" target="_blank" rel="noopener noreferrer">polaris</a>
+            </div>
           </article>
           <article class="area-card">
-            <h3>Data Control POCs</h3>
+            <h3>Access Control</h3>
             <p>Identity and policy control-plane experiments for enterprise governance.</p>
-            <p class="area-tags">openldap | ranger</p>
+            <div class="area-links">
+              <a href="https://www.openldap.org/" target="_blank" rel="noopener noreferrer">openldap</a>
+              <a href="https://ranger.apache.org/" target="_blank" rel="noopener noreferrer">ranger</a>
+            </div>
           </article>
           <article class="area-card">
-            <h3>Data Explorer POCs</h3>
+            <h3>Data Explorer</h3>
             <p>BI/query surface experiments for analyst and platform workflows.</p>
-            <p class="area-tags">superset | metabase | sqlpad | redash | querybook | cloudbeaver</p>
+            <div class="area-links">
+              <a href="https://superset.apache.org/" target="_blank" rel="noopener noreferrer">superset</a>
+              <a href="https://www.metabase.com/" target="_blank" rel="noopener noreferrer">metabase</a>
+              <a href="https://sqlpad.github.io/en/" target="_blank" rel="noopener noreferrer">sqlpad</a>
+              <a href="https://redash.io/" target="_blank" rel="noopener noreferrer">redash</a>
+              <a href="https://www.querybook.org/" target="_blank" rel="noopener noreferrer">querybook</a>
+              <a href="https://dbeaver.com/cloudbeaver/" target="_blank" rel="noopener noreferrer">cloudbeaver</a>
+            </div>
           </article>
           <article class="area-card">
             <h3>Data Gateway + Observability</h3>
             <p>Gateway control and runtime telemetry/ops surface.</p>
-            <p class="area-tags">trino-gateway | grafana | keda | kiali</p>
+            <div class="area-links">
+              <a href="https://github.com/trinodb/trino-gateway" target="_blank" rel="noopener noreferrer">trino-gateway</a>
+              <a href="https://grafana.com/" target="_blank" rel="noopener noreferrer">grafana</a>
+              <a href="https://keda.sh/" target="_blank" rel="noopener noreferrer">keda</a>
+              <a href="https://kiali.io/" target="_blank" rel="noopener noreferrer">kiali</a>
+            </div>
           </article>
           <article class="area-card">
             <h3>Data Orchestration + Data Pipe</h3>
-            <p>Pipeline execution and API-to-SQL ingress experimentation.</p>
-            <p class="area-tags">airflow | dbt | kestra | postgres | steampipe</p>
+            <p>Steampipe</p>
+            <div class="area-links">
+              <a href="https://steampipe.io/" target="_blank" rel="noopener noreferrer">steampipe</a>
+            </div>
           </article>
         </div>
 
