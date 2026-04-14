@@ -27,6 +27,7 @@
         <nav class="nav-links" aria-label="Primary navigation">
           <a href="#about">About</a>
           <a href="#federated">Federated Quasar</a>
+          <a href="#components">Components POC</a>
           <a href="#agentic">Agentic MCP</a>
           <a href="#flow">Flow</a>
           <a href="#projects">Projects</a>
@@ -181,6 +182,126 @@
               <p class="metric-label">Traceable flow with run logs</p>
             </article>
           </div>
+        </div>
+      </section>
+
+      <section id="components" class="wrap section reveal">
+        <div class="section-head">
+          <h2>Kubernetes Components POC Showcase</h2>
+          <p>
+            Highlighting the areas implemented under
+            <code>federated-quasar/kube/components</code> and the proof-of-concept
+            stacks available in my personal repository.
+            <a
+              href="https://github.com/vjain143/federated-quasar/tree/main/kube/components"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              View components in GitHub
+            </a>
+          </p>
+        </div>
+
+        <div class="component-logo-grid">
+          <figure class="component-figure">
+            <img
+              src="/assets/federated-quasar-overview.png"
+              alt="Federated Quasar architecture overview"
+              loading="lazy"
+            />
+            <figcaption>Federated Quasar architecture overview POC</figcaption>
+          </figure>
+          <figure class="component-figure">
+            <img
+              src="/assets/moat-opa-flow.png"
+              alt="Moat and OPA deployment flow"
+              loading="lazy"
+            />
+            <figcaption>Moat + OPA authorization flow POC</figcaption>
+          </figure>
+        </div>
+
+        <div class="area-grid">
+          <article class="area-card">
+            <h3>FQ Execution Plane</h3>
+            <p>Namespace-scoped execution plane with Trino + orchestration + storage services.</p>
+            <p class="area-tags">gex | trino | hms | minio | mysql | kestra</p>
+          </article>
+          <article class="area-card">
+            <h3>OM Metadata Plane</h3>
+            <p>OpenMetadata runtime with server, ingestion, search, and relational backing.</p>
+            <p class="area-tags">om-server | om-ingestion | om-elasticsearch | om-mysql</p>
+          </article>
+          <article class="area-card">
+            <h3>UMF Unified Metadata Fabric</h3>
+            <p>Dedicated metadata fabric for multi-engine governance boundaries.</p>
+            <p class="area-tags">umf-gravitino | umf-mysql</p>
+          </article>
+          <article class="area-card">
+            <h3>AIX Authorization Exchange</h3>
+            <p>Policy intelligence and decision enforcement for runtime authorization.</p>
+            <p class="area-tags">moat | opa | mysql</p>
+          </article>
+          <article class="area-card">
+            <h3>Data Catalog POCs</h3>
+            <p>Alternative metadata/catalog backbones to validate federation patterns.</p>
+            <p class="area-tags">gravitino | nessie | polaris</p>
+          </article>
+          <article class="area-card">
+            <h3>Data Control POCs</h3>
+            <p>Identity and policy control-plane experiments for enterprise governance.</p>
+            <p class="area-tags">openldap | ranger</p>
+          </article>
+          <article class="area-card">
+            <h3>Data Explorer POCs</h3>
+            <p>BI/query surface experiments for analyst and platform workflows.</p>
+            <p class="area-tags">superset | metabase | sqlpad | redash | querybook | cloudbeaver</p>
+          </article>
+          <article class="area-card">
+            <h3>Data Gateway + Observability</h3>
+            <p>Gateway control and runtime telemetry/ops surface.</p>
+            <p class="area-tags">trino-gateway | grafana | keda | kiali</p>
+          </article>
+          <article class="area-card">
+            <h3>Data Orchestration + Data Pipe</h3>
+            <p>Pipeline execution and API-to-SQL ingress experimentation.</p>
+            <p class="area-tags">airflow | dbt | kestra | postgres | steampipe</p>
+          </article>
+        </div>
+
+        <div class="component-code-grid">
+          <article class="code-card">
+            <h3>Core Kustomize Composition</h3>
+            <pre><code># kube/components/fq/kustomization.yml
+resources:
+  - fq-platform-namespace.yaml
+  - gex
+  - hms
+  - kestra
+  - minio
+  - mysql
+  - trino
+
+# kube/components/om/kustomization.yml
+resources:
+  - namespace.yml
+  - om-mysql
+  - om-elaseticsearch
+  - om-server
+  - om-ingestion</code></pre>
+          </article>
+          <article class="code-card">
+            <h3>POC Deploy Commands</h3>
+            <pre><code>kubectl apply -k kube/components/fq
+kubectl apply -k kube/components/umf
+kubectl apply -k kube/components/om
+kubectl apply -k kube/components/aix
+
+kubectl rollout status deployment/fq-trino-coordinator -n fq
+kubectl rollout status deployment/umf-gravitino -n umf
+kubectl rollout status deployment/om-server -n openmetadata
+kubectl rollout status deployment/opa -n aix</code></pre>
+          </article>
         </div>
       </section>
 
