@@ -2,6 +2,7 @@
 
 Portfolio homepage:
 - [Home](index.html)
+- [Medium Articles](medium.html)
 
 Featured GitHub project:
 - [federated-quasar](https://github.com/vjain143/federated-quasar)
