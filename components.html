@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vivek Jain | Kubernetes Components POC</title>
+    <meta
+      name="description"
+      content="Kubernetes Components POC showcase from federated-quasar with area highlights, code snippets, and codebase links."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Sora:wght@500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="orb orb-sun" aria-hidden="true"></div>
+    <div class="orb orb-sea" aria-hidden="true"></div>
+
+    <header class="site-header">
+      <div class="wrap nav-shell">
+        <a class="logo" href="/">VJ</a>
+        <nav class="nav-links" aria-label="Primary navigation">
+          <a href="/">Home</a>
+          <a href="/components.html">Components POC</a>
+          <a href="/medium.html">Articles</a>
+          <a href="/archive/">Archive</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="articles-layout">
+      <section class="wrap section reveal">
+        <div class="section-head">
+          <h1>Kubernetes Components POC Showcase</h1>
+          <p>
+            Dedicated view of the areas implemented under
+            <code>federated-quasar/kube/components</code> with visual POCs and
+            code excerpts.
+          </p>
+        </div>
+
+        <div class="component-code-grid">
+          <article class="code-card">
+            <h3>Codebase Links</h3>
+            <div class="link-row">
+              <a href="https://github.com/vjain143/federated-quasar" target="_blank" rel="noopener noreferrer">Repo Root</a>
+              <a href="https://github.com/vjain143/federated-quasar/tree/main/kube/components" target="_blank" rel="noopener noreferrer">kube/components</a>
+              <a href="https://github.com/vjain143/federated-quasar/tree/main/kube/components/fq" target="_blank" rel="noopener noreferrer">fq</a>
+              <a href="https://github.com/vjain143/federated-quasar/tree/main/kube/components/om" target="_blank" rel="noopener noreferrer">om</a>
+              <a href="https://github.com/vjain143/federated-quasar/tree/main/kube/components/umf" target="_blank" rel="noopener noreferrer">umf</a>
+              <a href="https://github.com/vjain143/federated-quasar/tree/main/kube/components/aix" target="_blank" rel="noopener noreferrer">aix</a>
+            </div>
+          </article>
+          <article class="code-card">
+            <h3>Core Deploy Flow</h3>
+            <pre><code>kubectl apply -k kube/components/fq
+kubectl apply -k kube/components/umf
+kubectl apply -k kube/components/om
+kubectl apply -k kube/components/aix</code></pre>
+          </article>
+        </div>
+
+        <div class="component-logo-grid">
+          <figure class="component-figure">
+            <img
+              src="/assets/federated-quasar-overview.png"
+              alt="Federated Quasar architecture overview"
+              loading="lazy"
+            />
+            <figcaption>Federated Quasar architecture overview POC</figcaption>
+          </figure>
+          <figure class="component-figure">
+            <img
+              src="/assets/moat-opa-flow.png"
+              alt="Moat and OPA deployment flow"
+              loading="lazy"
+            />
+            <figcaption>Moat + OPA authorization flow POC</figcaption>
+          </figure>
+        </div>
+
+        <div class="area-grid">
+          <article class="area-card">
+            <h3>FQ Execution Plane</h3>
+            <p>Namespace-scoped execution plane with Trino + orchestration + storage services.</p>
+            <p class="area-tags">gex | trino | hms | minio | mysql | kestra</p>
+          </article>
+          <article class="area-card">
+            <h3>OM Metadata Plane</h3>
+            <p>OpenMetadata runtime with server, ingestion, search, and relational backing.</p>
+            <p class="area-tags">om-server | om-ingestion | om-elasticsearch | om-mysql</p>
+          </article>
+          <article class="area-card">
+            <h3>UMF Unified Metadata Fabric</h3>
+            <p>Dedicated metadata fabric for multi-engine governance boundaries.</p>
+            <p class="area-tags">umf-gravitino | umf-mysql</p>
+          </article>
+          <article class="area-card">
+            <h3>AIX Authorization Exchange</h3>
+            <p>Policy intelligence and decision enforcement for runtime authorization.</p>
+            <p class="area-tags">moat | opa | mysql</p>
+          </article>
+          <article class="area-card">
+            <h3>Data Catalog POCs</h3>
+            <p>Alternative metadata/catalog backbones to validate federation patterns.</p>
+            <p class="area-tags">gravitino | nessie | polaris</p>
+          </article>
+          <article class="area-card">
+            <h3>Data Control POCs</h3>
+            <p>Identity and policy control-plane experiments for enterprise governance.</p>
+            <p class="area-tags">openldap | ranger</p>
+          </article>
+          <article class="area-card">
+            <h3>Data Explorer POCs</h3>
+            <p>BI/query surface experiments for analyst and platform workflows.</p>
+            <p class="area-tags">superset | metabase | sqlpad | redash | querybook | cloudbeaver</p>
+          </article>
+          <article class="area-card">
+            <h3>Data Gateway + Observability</h3>
+            <p>Gateway control and runtime telemetry/ops surface.</p>
+            <p class="area-tags">trino-gateway | grafana | keda | kiali</p>
+          </article>
+          <article class="area-card">
+            <h3>Data Orchestration + Data Pipe</h3>
+            <p>Pipeline execution and API-to-SQL ingress experimentation.</p>
+            <p class="area-tags">airflow | dbt | kestra | postgres | steampipe</p>
+          </article>
+        </div>
+
+        <div class="component-code-grid">
+          <article class="code-card">
+            <h3>Core Kustomize Composition</h3>
+            <pre><code># kube/components/fq/kustomization.yml
+resources:
+  - fq-platform-namespace.yaml
+  - gex
+  - hms
+  - kestra
+  - minio
+  - mysql
+  - trino
+
+# kube/components/om/kustomization.yml
+resources:
+  - namespace.yml
+  - om-mysql
+  - om-elaseticsearch
+  - om-server
+  - om-ingestion</code></pre>
+          </article>
+          <article class="code-card">
+            <h3>Validation Commands</h3>
+            <pre><code>kubectl rollout status deployment/fq-trino-coordinator -n fq
+kubectl rollout status deployment/umf-gravitino -n umf
+kubectl rollout status deployment/om-server -n openmetadata
+kubectl rollout status deployment/opa -n aix
+
+kubectl get svc -n fq
+kubectl get svc -n umf
+kubectl get svc -n openmetadata
+kubectl get svc -n aix</code></pre>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="wrap footer-shell">
+        <p>&copy; <span id="year"></span> Vivek Jain</p>
+        <div class="footer-links">
+          <a href="/">Home</a>
+          <a href="/medium.html">Articles</a>
+          <a href="/archive/">Archive</a>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      document.getElementById("year").textContent = new Date().getFullYear();
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("is-visible");
+            }
+          });
+        },
+        { threshold: 0.16 }
+      );
+      document.querySelectorAll(".reveal").forEach((item) => observer.observe(item));
+    </script>
+  </body>
+</html>

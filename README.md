@@ -2,6 +2,7 @@
 
 Portfolio homepage:
 - [Home](index.html)
+- [Kubernetes Components POC](components.html)
 - [Medium Articles](medium.html)
 
 Featured GitHub project:
