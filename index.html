@@ -3,152 +3,289 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vivek Jain | Data &amp; Platform Projects</title>
+    <title>Vivek Jain | Data Platform Engineer</title>
     <meta
       name="description"
-      content="Vivek Jain's project website featuring Trino engineering tools, interactive utilities, and technical writing."
+      content="Vivek Jain's portfolio highlighting federated-quasar, governance automation, and Kubernetes-first data platforms."
     />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&amp;family=Work+Sans:wght@400;500;600&amp;display=swap"
+      href="https://fonts.googleapis.com/css2?family=Syne:wght@500;700;800&family=DM+Sans:wght@400;500;700&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <div class="bg-shape bg-shape-left" aria-hidden="true"></div>
-    <div class="bg-shape bg-shape-right" aria-hidden="true"></div>
+    <div class="orb orb-sun" aria-hidden="true"></div>
+    <div class="orb orb-sea" aria-hidden="true"></div>
+    <div class="orb orb-sky" aria-hidden="true"></div>
 
-    <header class="topbar">
-      <div class="container topbar-inner">
-        <a class="brand" href="#">Vivek Jain</a>
-        <nav class="nav-links" aria-label="Primary">
+    <header class="site-header">
+      <div class="wrap nav-shell">
+        <a class="logo" href="#home">VJ</a>
+        <nav class="nav-links" aria-label="Primary navigation">
+          <a href="#about">About</a>
+          <a href="#federated">Federated Quasar</a>
+          <a href="#flow">Flow</a>
           <a href="#projects">Projects</a>
-          <a href="#tools">Tools</a>
-          <a href="#writing">Writing</a>
+          <a href="/archive/">Archive</a>
         </nav>
       </div>
     </header>
 
-    <main class="container">
-      <section class="hero reveal">
-        <p class="eyebrow">Data Platform Engineering</p>
-        <h1>Building practical tools for Trino operations and performance.</h1>
-        <p class="hero-copy">
-          I design lightweight, production-minded utilities that help teams
-          monitor systems, size infrastructure, and run technical workflows with
-          less friction.
-        </p>
-        <div class="hero-actions">
-          <a class="btn btn-primary" href="#projects">Explore Projects</a>
-          <a class="btn btn-secondary" href="#writing">Read Article</a>
+    <main id="home">
+      <section class="wrap hero reveal">
+        <div class="hero-copy">
+          <p class="eyebrow">LinkedIn Inspired Portfolio</p>
+          <h1>Vivek Jain</h1>
+          <p class="lead">
+            I build the platforms that modern cybersecurity and AI-driven organizations rely on.
+          </p>
+          <div class="hero-actions">
+            <a
+              class="btn btn-primary"
+              href="https://www.linkedin.com/in/vjain143/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              View LinkedIn
+            </a>
+            <a
+              class="btn btn-secondary"
+              href="https://github.com/vjain143/federated-quasar"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              View GitHub Project
+            </a>
+          </div>
+          <ul class="quick-facts">
+            <li>Kubernetes-first architecture</li>
+            <li>Metadata to policy automation</li>
+            <li>End-to-end governance execution</li>
+          </ul>
         </div>
+
+        <aside class="hero-panel">
+          <p class="panel-label">Signature Build</p>
+          <h2>Federated Quasar</h2>
+          <p>
+            A full-stack governed data platform blueprint connecting dbt, Trino,
+            OpenMetadata, Moat, and OPA into one auditable flow.
+          </p>
+          <div class="tech-stack" aria-label="Core stack">
+            <span>Trino</span>
+            <span>dbt</span>
+            <span>OpenMetadata</span>
+            <span>Moat</span>
+            <span>OPA</span>
+            <span>Kubernetes</span>
+          </div>
+          <a class="panel-link" href="#federated">Explore architecture</a>
+        </aside>
       </section>
 
-      <section class="metrics reveal" aria-label="Site statistics">
-        <article class="metric-card">
-          <p class="metric-value">6+</p>
-          <p class="metric-label">Interactive Tools</p>
-        </article>
-        <article class="metric-card">
-          <p class="metric-value">3</p>
-          <p class="metric-label">Trino Utilities</p>
-        </article>
-        <article class="metric-card">
-          <p class="metric-value">1</p>
-          <p class="metric-label">Published Deep Dive</p>
-        </article>
-      </section>
-
-      <section id="projects" class="section reveal">
+      <section id="about" class="wrap section reveal">
         <div class="section-head">
-          <h2>Featured Projects</h2>
-          <p>Focused tools for Trino architecture, governance, and observability.</p>
+          <h2>Profile</h2>
+          <p>
+            I build production-minded data platforms where engineering speed and
+            governance discipline are designed together from day one.
+          </p>
         </div>
-        <div class="card-grid">
-          <article class="project-card">
-            <h3>Trino Memory Sizing Guidelines</h3>
-            <p>Reference-driven sizing helper for coordinator and worker memory strategy.</p>
-            <a href="Trino_Memory_Sizing_Guidelines.html">Open Tool</a>
+        <div class="profile-grid">
+          <article class="card">
+            <h3>What I Focus On</h3>
+            <p>
+              Delivery systems that unify data modeling, metadata quality,
+              policy generation, and query-time enforcement.
+            </p>
           </article>
-          <article class="project-card">
-            <h3>Trino ACL Parser</h3>
-            <p>Parse and inspect ACL configurations quickly for policy validation and review.</p>
-            <a href="Trino_ACL_Parser.html">Open Tool</a>
-          </article>
-          <article class="project-card">
-            <h3>Trino ACL Playground</h3>
-            <p>Explore ACL behavior interactively to speed up troubleshooting and testing.</p>
-            <a href="TrinoACL.html">Open Tool</a>
-          </article>
-        </div>
-      </section>
-
-      <section id="tools" class="section reveal">
-        <div class="section-head">
-          <h2>Interactive Utilities</h2>
-          <p>Small web-based utilities built for quick execution and demos.</p>
-        </div>
-        <div class="card-grid card-grid-2">
-          <article class="project-card">
-            <h3>Cars Race Timer</h3>
-            <p>Track race countdowns and finish ordering for timed competitions.</p>
-            <a href="Timer_Cars.html">Launch</a>
-          </article>
-          <article class="project-card">
-            <h3>Bikes Race Timer</h3>
-            <p>Custom countdown timer optimized for bike challenge scenarios.</p>
-            <a href="Timer_Bikes.html">Launch</a>
-          </article>
-          <article class="project-card">
-            <h3>Bikes Leaderboard</h3>
-            <p>Leaderboard view for comparing results across bike race participants.</p>
-            <a href="Timer_Bikes_Leaderboard.html">Launch</a>
-          </article>
-          <article class="project-card">
-            <h3>Spin-the-Wheel Timer</h3>
-            <p>Randomized timer selector with game-like interaction for activities.</p>
-            <a href="Spin-the-Wheel-Timer.html">Launch</a>
-          </article>
-          <article class="project-card">
-            <h3>Dice Tool</h3>
-            <p>Simple, fast dice utility for random outcomes during sessions.</p>
-            <a href="Dice.html">Launch</a>
+          <article class="card">
+            <h3>Operating Style</h3>
+            <p>
+              Architecture that is practical to deploy, transparent to audit,
+              and scalable across analytics and platform teams.
+            </p>
           </article>
         </div>
       </section>
 
-      <section id="writing" class="section highlight reveal">
+      <section id="federated" class="wrap section reveal">
         <div class="section-head">
-          <h2>Technical Writing</h2>
+          <h2>Featured Project: federated-quasar</h2>
+          <p>
+            A complete data + metadata + governance operating model in one
+            repository.
+          </p>
         </div>
-        <p>
-          10 Must-Have SQL Queries to Monitor Trino: practical SQL checks for
-          query behavior, health indicators, and performance insights.
-        </p>
-        <a
-          class="btn btn-primary"
-          href="https://medium.com/@vjain143/10-must-have-sql-queries-to-monitor-trino-unlocking-insights-from-the-trino-events-trino-queries-035f0cc27d80"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Read on Medium
-        </a>
+
+        <div class="feature-grid">
+          <article class="card card-strong">
+            <h3>What It Delivers</h3>
+            <ul class="check-list">
+              <li>Executes dbt workflows against Trino via Governance Execution Engine</li>
+              <li>Publishes technical and business metadata into OpenMetadata</li>
+              <li>Transforms metadata into policy bundles through Moat + OPA</li>
+              <li>Enforces authorization decisions directly in Trino</li>
+            </ul>
+            <div class="link-row">
+              <a
+                href="https://github.com/vjain143/federated-quasar"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Repository
+              </a>
+              <a
+                href="https://github.com/vjain143/federated-quasar/blob/main/docs/EXECUTIVE-README.md"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Executive Flow
+              </a>
+              <a
+                href="https://github.com/vjain143/federated-quasar/blob/main/docs/DBT-USER-GUIDE.md"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                User Guide
+              </a>
+            </div>
+          </article>
+
+          <div class="metric-grid">
+            <article class="metric-card">
+              <p class="metric-value">4</p>
+              <p class="metric-label">Core namespaces</p>
+            </article>
+            <article class="metric-card">
+              <p class="metric-value">7+</p>
+              <p class="metric-label">Major systems integrated</p>
+            </article>
+            <article class="metric-card">
+              <p class="metric-value">1</p>
+              <p class="metric-label">Governed execution path</p>
+            </article>
+            <article class="metric-card">
+              <p class="metric-value">100%</p>
+              <p class="metric-label">Flow visibility with step logs</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="flow" class="wrap section reveal">
+        <div class="section-head">
+          <h2>End-to-End Governance Flow</h2>
+          <p>From model execution to policy enforcement, one connected sequence.</p>
+        </div>
+        <div class="flow-grid">
+          <article class="flow-card">
+            <span>01</span>
+            <h3>Load dbt Project</h3>
+            <p>Start a run in GEX with model selection and execution control.</p>
+          </article>
+          <article class="flow-card">
+            <span>02</span>
+            <h3>Run on Trino</h3>
+            <p>Execute dbt run/test/docs to create and validate data assets.</p>
+          </article>
+          <article class="flow-card">
+            <span>03</span>
+            <h3>Ingest Metadata</h3>
+            <p>Push Trino and dbt artifacts into OpenMetadata.</p>
+          </article>
+          <article class="flow-card">
+            <span>04</span>
+            <h3>Generate Policies</h3>
+            <p>Moat maps metadata attributes into policy bundle state.</p>
+          </article>
+          <article class="flow-card">
+            <span>05</span>
+            <h3>Distribute to OPA</h3>
+            <p>OPA consumes bundles and serves policy decisions in real time.</p>
+          </article>
+          <article class="flow-card">
+            <span>06</span>
+            <h3>Enforce in Trino</h3>
+            <p>Trino evaluates allow, row-filter, and column-mask decisions.</p>
+          </article>
+        </div>
+      </section>
+
+      <section id="projects" class="wrap section reveal">
+        <div class="section-head">
+          <h2>More Work</h2>
+          <p>Additional projects and writing connected to governance and platform ops.</p>
+        </div>
+        <div class="project-grid">
+          <article class="card">
+            <h3>Rego Policy Studio</h3>
+            <p>
+              Policy authoring and validation workflows for governance teams.
+            </p>
+            <a
+              href="https://github.com/vjain143/rego-policy-studio"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Open repository
+            </a>
+          </article>
+          <article class="card">
+            <h3>Trino Monitoring SQL</h3>
+            <p>
+              Monitoring queries and practical observability checks for Trino
+              operations.
+            </p>
+            <a
+              href="https://medium.com/@vjain143/10-must-have-sql-queries-to-monitor-trino-unlocking-insights-from-the-trino-events-trino-queries-035f0cc27d80"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Read article
+            </a>
+          </article>
+          <article class="card">
+            <h3>Legacy Tools Archive</h3>
+            <p>
+              Earlier calculators and utilities are preserved in the archive
+              section.
+            </p>
+            <a href="/archive/">Open archive</a>
+          </article>
+        </div>
       </section>
     </main>
 
-    <footer class="footer">
-      <div class="container footer-inner">
+    <footer class="site-footer">
+      <div class="wrap footer-shell">
         <p>&copy; <span id="year"></span> Vivek Jain</p>
-        <a href="https://github.com/vjain143" target="_blank" rel="noopener noreferrer">
-          GitHub
-        </a>
+        <div class="footer-links">
+          <a href="https://github.com/vjain143" target="_blank" rel="noopener noreferrer">GitHub</a>
+          <a href="https://www.linkedin.com/in/vjain143/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+          <a href="/archive/">Archive</a>
+        </div>
       </div>
     </footer>
 
     <script>
       document.getElementById("year").textContent = new Date().getFullYear();
+
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("is-visible");
+            }
+          });
+        },
+        { threshold: 0.18 }
+      );
+
+      document.querySelectorAll(".reveal").forEach((item) => observer.observe(item));
     </script>
   </body>
 </html>

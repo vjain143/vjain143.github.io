@@ -1,13 +1,19 @@
 # vjain143.github.io
 
-Trino
-- [Trino_Memory_Sizing_Guidelines](Trino_Memory_Sizing_Guidelines.html)
-- [Trino_ACL_Parser](Trino_ACL_Parser.html)
-- [10 Must-Have SQL Queries to Monitor Trino](https://medium.com/@vjain143/10-must-have-sql-queries-to-monitor-trino-unlocking-insights-from-the-trino-events-trino-queries-035f0cc27d80)
+Portfolio homepage:
+- [Home](index.html)
 
-Countdown Timers “Who Finishes First” Challenge
-- [Car Timer](Timer_Cars.html)
-- [Bike Timer](Timer_Bikes.html)
-- [Timer Bikes Leaderboard](Timer_Bikes_Leaderboard.html)
-- [Spin-the-Wheel-Timer](Spin-the-Wheel-Timer.html)
-- [Dice](Dice.html)
+Featured GitHub project:
+- [federated-quasar](https://github.com/vjain143/federated-quasar)
+
+Legacy pages and tools:
+- [Archive landing page](archive/index.html)
+- [Legacy homepage snapshot](archive/legacy-home.html)
+- [Trino Memory Sizing Guidelines](archive/Trino_Memory_Sizing_Guidelines.html)
+- [Trino ACL Parser](archive/Trino_ACL_Parser.html)
+- [Trino ACL Playground](archive/TrinoACL.html)
+- [Car Timer](archive/Timer_Cars.html)
+- [Bike Timer](archive/Timer_Bikes.html)
+- [Timer Bikes Leaderboard](archive/Timer_Bikes_Leaderboard.html)
+- [Spin-the-Wheel-Timer](archive/Spin-the-Wheel-Timer.html)
+- [Dice](archive/Dice.html)
