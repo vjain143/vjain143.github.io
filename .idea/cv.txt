@@ -1,0 +1,76 @@
+PROFESSIONAL SUMMARY
+Hands-on Staff / Principal Software Engineer and Solution Architect with 18+ years writing production code, designing
+distributed systems, and scaling cloud-native data and AI platforms across Fortune 100 financial institutions. Deep technical
+depth in Java, Python, SQL, system design, performance engineering, and large-scale distributed architectures (Kubernetes,
+Trino, Iceberg, Kafka, Spark). Equally effective driving cross-team technical strategy and architecture reviews as I am hands-
+on at the keyboard — designing APIs, writing connectors, debugging production issues, and shipping code. Architected the
+firm's first Cyber Data Mesh (1,000+ users, 99.98% reliability), modernized legacy Hadoop to Kubernetes, and delivered AI-
+ready governed platforms. Open-source contributor and 2024 J.P. Morgan Business Result Award recipient.
+CORE COMPETENCIES
+Hands-On Engineering: Production Coding (Java, Python, SQL, Scala), System Design, Code Review, Pair Programming,
+Debugging, Performance Tuning, Connector & Framework Development, Open-Source Contribution, Technical Writing, RFC
+Authoring
+Architecture & Distributed Systems: Distributed Systems, Microservices, Event-Driven Architecture, Data Mesh, Federated
+Query Platforms, Service-Oriented Architecture, API-First Design, Multi-Tenant SaaS, High-Availability Systems,
+Concurrency, Performance & Scalability Engineering, Site Reliability
+Technical Leadership: Technical Strategy, Architecture Governance, Roadmap Definition, Cross-Team Influence, Design
+Reviews, Mentoring Senior Engineers, Hiring, Agile/Scrum, DevSecOps, Stakeholder Management, C-Suite Partnership
+Cloud & Infrastructure: AWS (EKS, S3, EC2, IAM), Kubernetes, Docker, Helm, Terraform, Argo CD, GitOps, Apigee, MinIO,
+Linux, CI/CD, Jenkins, GitHub Actions, Infrastructure-as-Code, Cloud Migration & Modernization
+Data & AI Platforms: Trino/Presto, Apache Iceberg, Apache Kafka, Apache Spark, Apache Flink, Apache NiFi, Databricks,
+Hadoop/HDFS, dbt, Kestra, Airflow, OpenSearch, OpenMetadata, Data Warehousing, ETL/ELT, Real-Time Streaming, Batch
+Processing
+AI, ML & LLMs: Generative AI, Large Language Models (LLM), Retrieval-Augmented Generation (RAG), Agentic AI, Model
+Context Protocol (MCP), Embeddings, Semantic Search, AI Governance, Human-in-the-Loop, AI-Ready Metadata
+Security & Governance: Open Policy Agent (OPA), ABAC, RBAC, PBAC, Data Loss Prevention (DLP), Cyber Threat Intelligence,
+STIX/TAXII, NIST, MITRE ATT&CK, OASIS, Zero Trust, Identity & Access Management, Compliance, Audit, SIEM Integration
+Programming & Frameworks: Java, Python, Scala, SQL, Spring Boot, Hibernate, REST APIs, GraphQL, Maven, JUnit, Reactive
+Programming
+Databases & Storage: Oracle, PostgreSQL, MS SQL Server, MongoDB, Cassandra, Redis, Iceberg Tables, S3, MinIO Object
+Storage
+KEY ACHIEVEMENTS
+• 2024 J.P. Morgan Business Result Award for conceptualizing, architecting, and scaling the firm's first Cyber Data Mesh
+platform from inception to enterprise adoption.
+• Designed and personally coded a federated SQL-over-API connector (Java, Trino SPI) exposing 80+ REST APIs as
+queryable relational tables — a reusable platform primitive adopted across the firm.
+• Scaled platform to 200,000+ queries per day, 1,000+ active users, 99.98% reliability across 50+ Kubernetes clusters and
+13+ departments.
+• Reduced infrastructure cost by 40% (from $1.2M to $700K annually) through workload-aware optimization, right-
+sizing, and auto-scaling.
+• Modernized legacy Hadoop to Kubernetes-native containerized platform, improving elasticity by 50% and cutting
+analysis time from weeks to hours across 13+ departments.
+PROFESSIONAL EXPERIENCE
+J.P. Morgan Chase — Dublin, Ireland
+Vice President — Senior Lead Security Engineer September 2015 – Present
+Cyber Foundation Engineering — Data Platform, Security Intelligence, and AI Enablement. Hands-on Principal Engineer:
+architected, coded, and shipped the firm's enterprise-scale Cyber Data Mesh, AI-ready metadata platform, and threat-
+intelligence services while leading cross-team technical direction.
+• Directed end-to-end design and delivery of a Kubernetes-native Distributed Cyber Data Mesh integrating Trino, Apache
+Iceberg, OpenMetadata, Kafka, dbt, and Kestra, enabling "SQL-on-anything" analytics across APIs, streaming systems,
+and object storage.
+• Hands-on designed, built, and shipped a federated SQL-over-API connector (Java, Trino SPI) exposing 80+ REST APIs as
+queryable relational tables — eliminating duplicate ingestion pipelines and accelerating downstream analytics.
+• Architected AI-enablement layer using Retrieval-Augmented Generation (RAG), metadata embeddings, and Model
+Context Protocol (MCP), enabling AI agents to discover datasets, generate governed SQL, and execute policy-bound
+workflows.
+• Led modernization of legacy Hadoop ecosystem to Kubernetes-native containerized platform on AWS EKS, increasing
+scalability by 50% and reducing infrastructure cost by 30%.
+• Built and operationalized Enterprise Threat Intelligence Hub integrating VirusTotal, ThreatConnect, FireEye, and
+ReversingLabs, automating malware detection, enrichment, and response workflows.
+• Engineered high-throughput, real-time ETL pipelines (Apache NiFi, Flink, Kafka, Spark) ingesting multi-source cyber
+telemetry at millions of events per day.
+• Implemented metadata-driven governance and policy-based access control using OpenMetadata, Open Policy Agent
+(OPA), ABAC/PBAC, and row/column-level security; established GitOps automation with Argo CD.
+• Defined and rolled out STIX/TAXII-based data-exchange standards adopted across 20+ security domains, improving
+interoperability and reducing integration time enterprise-wide.
+• Led architecture decisions on scalability, consistency, latency, resiliency, and cost across multi-tenant systems;
+mentored engineers and led design reviews across cross-functional teams.
+• Partnered with senior cyber, CTO, and CISO leadership to align engineering investments with strategic business
+priorities, accelerating time-to-market and improving compliance posture.
+Cognizant Technology Solutions — London, UK & Dublin, Ireland
+Architect / Solution Architect / Technology Specialist March 2009 – August 2015
+Delivered enterprise architecture, integration, and modernization programs across global banking clients including J.P.
+Morgan, Lloyds Banking Group, and Royal Bank of Scotland.
+• J.P. Morgan — Data Architect (Security & DLP): Designed and operationalized a semantic knowledge graph for cyber-
+data governance aligned with MITRE, NIST, CVE, and CWE standards; led architecture of enterprise Data Loss
+Prevention solutions integrating SIEM, identity, and incident response systems.
